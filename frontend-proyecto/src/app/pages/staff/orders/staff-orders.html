@@ -1,0 +1,189 @@
+<section class="staff-orders" aria-label="Staff orders view">
+  <header class="orders-header">
+    <div>
+      <h2>Orders</h2>
+      <p>Switch between client and supplier orders.</p>
+    </div>
+
+    <div class="orders-view-toggle" role="tablist" aria-label="Order sources">
+      <button type="button" class="toggle-button" [class.active]="view() === 'client'" (click)="selectView('client')">
+        Client orders
+      </button>
+      <button type="button" class="toggle-button" [class.active]="view() === 'supplier'"
+        (click)="selectView('supplier')">
+        Supplier orders
+      </button>
+    </div>
+  </header>
+
+  @if (view() === 'client') {
+    <div class="orders-filters" aria-label="Order filters">
+      <label class="filter-field" for="orders-loyalty-filter">
+        <span>Order ID / Loyalty / Client ID</span>
+        <input id="orders-loyalty-filter" type="text" class="filter-input" [value]="loyaltyCodeFilter()"
+          placeholder="Order ID, FID-000000 or client id"
+          (input)="onLoyaltyCodeFilterChange($any($event.target).value)" />
+      </label>
+
+      <label class="filter-field" for="orders-date-filter">
+        <span>Date</span>
+        <input id="orders-date-filter" type="date" class="filter-input" [value]="orderDateFilter()"
+          (change)="onOrderDateFilterChange($any($event.target).value)" />
+      </label>
+
+      <div class="filter-field">
+        <span>Sort by date</span>
+        <button type="button" class="filter-input sort-toggle-button" (click)="toggleOrderDateSort()">
+          @if (orderDateSortOrder() === 'desc') {
+          <i class="pi pi-sort-amount-down"></i> Newest first
+          } @else {
+          <i class="pi pi-sort-amount-up"></i> Oldest first
+          }
+        </button>
+      </div>
+
+      <label class="filter-field" for="orders-status-filter">
+        <span>Status</span>
+        <select id="orders-status-filter" class="filter-input" [value]="orderStatusFilter()"
+          (change)="onOrderStatusFilterChange($any($event.target).value)">
+          @for (option of orderStatusOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+
+      <button type="button" class="clear-filters-button" [disabled]="!hasActiveFilters()" (click)="clearFilters()">
+        Clear filters
+      </button>
+    </div>
+
+    @if (errorMessage()) {
+    <p class="orders-error">{{ errorMessage() }}</p>
+    }
+
+    @if (isEmployee()) {
+    <p class="orders-note">Employee view is limited to orders created in the last 14 days.</p>
+    }
+
+    <app-table entityLabel="Client orders" title="Client orders service"
+      description="Browse online orders and filter by loyalty code, date, or status."
+      emptyMessage="No orders match the current filters." [loading]="loadingOrders() || updatingOrderId() !== null"
+      [rowClickable]="true" (rowClicked)="handleRowClick($event)" [rows]="filteredRows()" [columns]="columns"
+      [actions]="actions" [paginator]="true" [rowsPerPage]="10" [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} orders"
+      (actionTriggered)="handleAction($event)"></app-table>
+  }
+
+  @if (view() === 'supplier') {
+    <app-supplier-orders-filter [nameFilter]="supplierNameFilter()" [creatorFilter]="supplierCreatorFilter()"
+      [dateFilter]="supplierDateFilter()" [statusFilter]="supplierStatusFilter()"
+      [statusOptions]="supplierStatusOptions" [dateSortOrder]="supplierDateSortOrder()"
+      [hasActiveFilters]="hasActiveSupplierFilters()" (nameFilterChange)="onSupplierNameFilterChange($event)"
+      (creatorFilterChange)="onSupplierCreatorFilterChange($event)"
+      (dateFilterChange)="onSupplierDateFilterChange($event)"
+      (statusFilterChange)="onSupplierStatusFilterChange($event)" (toggleDateSort)="toggleSupplierDateSort()"
+      (clearFilters)="clearSupplierFilters()"></app-supplier-orders-filter>
+
+    <app-supplier-order-requests [loading]="supplierLoading()" [updatingOrderId]="supplierUpdatingOrderId()"
+      [rows]="filteredSupplierRows()" [columns]="supplierColumns" [actions]="supplierActions"
+      [errorMessage]="supplierErrorMessage()" [successMessage]="supplierSuccessMessage()"
+      (actionTriggered)="handleSupplierAction($event)"
+      (rowClicked)="handleSupplierRowClick($event)"></app-supplier-order-requests>
+  }
+
+  <p-dialog [visible]="orderDetail() !== null" (visibleChange)="orderDetail.set(null)" [modal]="true"
+    [style]="{ width: '1000px' }" [breakpoints]="{ '960px': '90vw', '640px': '100vw' }" [draggable]="false"
+    [resizable]="false" [showHeader]="false" styleClass="detail-dialog-custom">
+    @if (orderDetail(); as order) {
+    <app-detail-view [title]="'Order #' + order.id" [subtitle]="'Product details'" [status]="order.status"
+      [statusSeverity]="view() === 'client' ? getStatusSeverity(order.status) : 'info'" (back)="orderDetail.set(null)">
+      <div sidebar class="info-list">
+        <div class="info-item">
+          <i class="pi pi-calendar"></i>
+          <div class="info-item-content">
+            <span class="info-item-label">Date</span>
+            <span class="info-item-value">{{ order.createdAt }}</span>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <i class="pi pi-user"></i>
+          <div class="info-item-content">
+            <span class="info-item-label">{{ view() === 'client' ? 'Client' : 'Supplier' }}</span>
+            <span class="info-item-value">
+              {{ view() === 'client' ? order['clientReference'] || 'N/A' : order['supplierName'] }}
+            </span>
+          </div>
+        </div>
+
+        @if (view() === 'supplier') {
+          <div class="info-item">
+            <i class="pi pi-id-card"></i>
+            <div class="info-item-content">
+              <span class="info-item-label">Created by</span>
+              <span class="info-item-value">{{ order['creatorName'] }}</span>
+            </div>
+          </div>
+        }
+
+        <div class="info-separator"></div>
+
+        <div class="info-item">
+          <i class="pi pi-wallet"></i>
+          <div class="info-item-content">
+            <span class="info-item-label">Total Amount</span>
+            <span class="text-3xl gradient-text">{{ order['totalPrice'] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div main>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="width: 42px; height: 42px; background: rgba(30, 64, 175, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i [class]="view() === 'client' ? 'pi pi-shopping-bag' : 'pi pi-box'" style="font-size: 1.25rem; color: var(--color-primary);"></i>
+          </div>
+          <h3 style="font-size: 1.4rem; font-weight: 900; margin: 0;">{{ view() === 'client' ? 'Order Contents' : 'Items Requested' }}</h3>
+        </div>
+
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-right">Quantity</th>
+              <th class="text-right">Unit Price</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of order['details']; track $index) {
+            <tr>
+              <td>
+                <span class="font-bold block">{{ item.productName }}</span>
+                <span class="text-xs text-secondary">#{{ item.productId }}</span>
+              </td>
+              <td class="text-right">{{ item.quantity }}</td>
+              <td class="text-right">{{ item.unitPrice | currency:'EUR' }}</td>
+              <td class="text-right font-bold">{{ (item.quantity * item.unitPrice) | currency:'EUR' }}</td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="4" class="text-center">No products in this order.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+
+        @if (order['validatorName'] && order['validatorName'] !== '-') {
+          <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(148, 163, 184, 0.15); display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></div>
+            <span class="text-sm text-secondary" style="font-weight: 500;">
+              Validated by: <strong style="color: #22c55e;">{{ order['validatorName'] }}</strong> 
+              <span style="margin-left: 0.5rem; opacity: 0.7;">(at {{ order['resolvedAt'] }})</span>
+            </span>
+          </div>
+        }
+      </div>
+    </app-detail-view>
+    }
+  </p-dialog>
+</section>

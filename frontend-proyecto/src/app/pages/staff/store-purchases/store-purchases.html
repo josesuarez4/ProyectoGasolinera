@@ -1,0 +1,203 @@
+<section class="store-purchases-panel" aria-label="Store purchases workspace">
+  <header class="store-page-header">
+    <h2>Store Purchase</h2>
+    <p>Register in-store sales, manage the cart, and complete checkout.</p>
+  </header>
+
+  <div class="store-purchases-grid">
+    <div class="store-products-panel">
+      <div class="store-products-header">
+        <div>
+          <h3>Store purchases</h3>
+          <p>Search products, add them to the cart, and complete the sale from the sidebar.</p>
+        </div>
+      </div>
+
+      <div class="store-filters" aria-label="Product filters">
+        <label class="store-filter-field">
+          <span>Search</span>
+          <input
+            type="search"
+            class="store-filter-input"
+            [value]="storeSearchTerm()"
+            placeholder="Search by product, category, description or code"
+            (input)="onStoreSearchChange($any($event.target).value)"
+          />
+        </label>
+
+        <label class="store-filter-field">
+          <span>Category</span>
+          <select
+            class="store-filter-select"
+            [value]="storeCategoryId() ?? ''"
+            (change)="onStoreCategoryChange($any($event.target).value)"
+          >
+            @for (category of storeCategories(); track category.id ?? category.name) {
+              <option [value]="category.id ?? ''">{{ category.name }}</option>
+            }
+          </select>
+        </label>
+
+        <button type="button" class="store-clear-button" (click)="clearStoreFilters()">
+          Clear filters
+        </button>
+      </div>
+
+      @if (storeErrorMessage()) {
+        <p class="store-error">{{ storeErrorMessage() }}</p>
+      }
+
+      <app-table
+        entityLabel="Store products"
+        title="Physical store catalogue"
+        description="Add products to the purchase cart from the action button in each row."
+        emptyMessage="No products match the current filters."
+        [actionColumnPosition]="'start'"
+        [loading]="storeLoading()"
+        [rows]="filteredStoreProducts()"
+        [columns]="storeColumns"
+        [actions]="storeActions"
+        [paginator]="true"
+        [rowsPerPage]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        (actionTriggered)="handleStoreAction($event)"
+      ></app-table>
+    </div>
+
+    <aside class="store-cart-panel" aria-label="Store cart">
+      <div class="store-cart-header">
+        <div>
+          <p class="store-cart-eyebrow">Cart</p>
+          <h3>Current purchase</h3>
+        </div>
+      </div>
+
+      @if (cart.itemCount() === 0) {
+        <div class="store-cart-empty">
+          <i class="pi pi-shopping-cart"></i>
+          <p>The cart is empty.</p>
+          <span>Add products from the table on the left.</span>
+        </div>
+      } @else {
+        <ul class="store-cart-items">
+          @for (item of cart.items(); track item.productId) {
+            <li class="store-cart-item">
+              <div class="store-cart-item__info">
+                <strong>{{ item.name }}</strong>
+                <span>{{ item.price | currency: 'EUR' : 'symbol' : '1.2-2' }} per unit</span>
+              </div>
+
+              <div class="store-cart-item__controls">
+                <p-button
+                  icon="pi pi-minus"
+                  [text]="true"
+                  severity="secondary"
+                  size="small"
+                  [attr.aria-label]="'Decrease quantity of ' + item.name"
+                  (onClick)="cart.updateQuantity(item.productId, item.quantity - 1)"
+                ></p-button>
+
+                <input
+                  type="number"
+                  class="store-cart-qty-input"
+                  [value]="item.quantity"
+                  [min]="1"
+                  [max]="item.stock"
+                  (change)="
+                    onQuantityInputChange(item.productId, item.stock, $any($event.target).value)
+                  "
+                />
+
+                <p-button
+                  icon="pi pi-plus"
+                  [text]="true"
+                  severity="secondary"
+                  size="small"
+                  [disabled]="item.quantity >= item.stock"
+                  [attr.aria-label]="'Increase quantity of ' + item.name"
+                  (onClick)="cart.updateQuantity(item.productId, item.quantity + 1)"
+                ></p-button>
+              </div>
+
+              <div class="store-cart-item__actions">
+                <span>{{ item.price * item.quantity | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+                <p-button
+                  icon="pi pi-trash"
+                  [text]="true"
+                  severity="danger"
+                  size="small"
+                  [attr.aria-label]="'Remove ' + item.name + ' from cart'"
+                  (onClick)="cart.removeItem(item.productId)"
+                ></p-button>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <div class="store-cart-summary">
+          <div class="store-cart-summary__row">
+            <span>Subtotal</span>
+            <span>{{ cart.subtotal() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+          </div>
+          <div class="store-cart-summary__row">
+            <span>IGIC</span>
+            <span>{{ cart.taxAmount() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+          </div>
+          <div class="store-cart-summary__row store-cart-summary__row--total">
+            <span>Total</span>
+            <span>{{ cart.total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="store-cart-loyalty">
+          <label class="store-loyalty-label">
+            <span>Loyalty code (optional)</span>
+            <input
+              type="text"
+              class="store-loyalty-input"
+              [value]="loyaltyCode()"
+              placeholder="FID-000000"
+              (input)="loyaltyCode.set($any($event.target).value)"
+            />
+          </label>
+        </div>
+
+        <div class="store-payment-section">
+          <label class="store-payment-label">
+            <span>Payment method</span>
+            <select
+              class="store-payment-select"
+              [value]="paymentType()"
+              (change)="paymentType.set($any($event.target).value)"
+            >
+              <option value="CASH">Cash</option>
+              <option value="CARD">Card</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="store-cart-actions">
+          <p-button
+            label="Complete purchase"
+            icon="pi pi-check"
+            severity="success"
+            styleClass="w-full"
+            [loading]="storePurchasing()"
+            [disabled]="cart.itemCount() === 0"
+            (onClick)="checkoutStorePurchase()"
+          ></p-button>
+          <p-button
+            label="Clear cart"
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            styleClass="w-full"
+            (onClick)="cart.clearCart()"
+          ></p-button>
+        </div>
+      }
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+<div class="points-container">
+  <header class="points-header">
+    <h1>Tienda de Puntos</h1>
+    <div class="user-points-badge">
+      <i class="pi pi-star-fill"></i>
+      <span>Tienes: <strong>{{ userPoints }} puntos</strong></span>
+    </div>
+  </header>
+
+  <div class="products-grid">
+    @for (product of storeProducts; track product.id) {
+      <div class="product-card" [class.no-stock]="product.currentStock <= 0">
+        
+        @if (product.currentStock <= 0) {
+          <span class="badge-out">Agotado</span>
+        }
+
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="description">{{ product.description }}</p>
+          
+          <div class="price-section">
+            <span class="point-cost">
+              {{ calculatePointCost(product.salePrice) }} 
+              <small>puntos</small>
+            </span>
+            <span class="stock-info">Stock: {{ product.currentStock }}</span>
+          </div>
+        </div>
+
+        <button 
+          class="btn-redeem"
+          (click)="redeemProduct(product)"
+          [disabled]="userPoints < calculatePointCost(product.salePrice) || product.currentStock <= 0">
+          
+          @if (userPoints < calculatePointCost(product.salePrice) && product.currentStock > 0) {
+            Faltan puntos
+          } @else if (product.currentStock <= 0) {
+            No disponible
+          } @else {
+            Canjear ahora
+          }
+        </button>
+
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No hay productos disponibles en la tienda de puntos en este momento.</p>
+      </div>
+    }
+  </div>
+</div>

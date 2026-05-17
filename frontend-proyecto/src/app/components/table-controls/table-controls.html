@@ -1,0 +1,64 @@
+<div class="table-controls" role="search" aria-label="Filtros y ordenación de tabla">
+  <!-- Búsqueda / Filtrado rápido -->
+  @if (sortBy() !== 'monthlySales') {
+    <div class="control-field">
+      <label class="control-label" for="search-input">Fast Search (Supplier / Name)</label>
+      <div class="search-box">
+        <i class="pi pi-search search-icon"></i>
+        <input
+          pInputText
+          id="search-input"
+          type="text"
+          class="control-input"
+          [value]="searchTerm()"
+          placeholder="Search by supplier or name..."
+          (input)="onSearchChange($any($event.target).value)"
+        />
+      </div>
+    </div>
+  }
+
+  <!-- Ordenación -->
+  <div class="control-field">
+    <label class="control-label" for="sort-by-select">Sort by</label>
+    <div class="sort-controls">
+      <select
+        id="sort-by-select"
+        class="p-inputtext control-input"
+        [value]="sortBy()"
+        (change)="onSortByChange($any($event.target).value)"
+      >
+        @for (option of sortOptions(); track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+
+      <p-button
+        [icon]="sortOrder() === 'asc' ? 'pi pi-sort-alpha-down' : 'pi pi-sort-alpha-up'"
+        [text]="true"
+        [severity]="'secondary'"
+        (click)="toggleSortOrder()"
+        [pTooltip]="sortOrder() === 'asc' ? 'Ascending' : 'Descending'"
+        tooltipPosition="top"
+      ></p-button>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="control-actions">
+    <p-button
+      label="Clear"
+      icon="pi pi-filter-slash"
+      [outlined]="true"
+      [severity]="'secondary'"
+      (click)="onClearFilters()"
+    ></p-button>
+
+    <p-button
+      label="Refresh"
+      icon="pi pi-refresh"
+      [loading]="loading()"
+      (click)="onRefresh()"
+    ></p-button>
+  </div>
+</div>

@@ -1,0 +1,180 @@
+:host {
+  display: inline-flex;
+}
+
+.notification-center {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.notification-panel {
+  /* position and coordinates are set inline from the component to avoid overflow */
+  position: fixed;
+  width: min(380px, 92vw);
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+  overflow: hidden;
+  background: #ffffff;
+  z-index: 1200;
+}
+
+.panel-header {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(120deg, rgba(226, 232, 240, 0.8), rgba(248, 250, 252, 0.95));
+}
+
+.panel-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.panel-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.panel-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.unread-pill {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.panel-body {
+  max-height: 360px;
+  overflow: auto;
+  padding: 0.75rem;
+}
+
+.panel-empty {
+  margin: 0;
+  padding: 1.2rem 0.5rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.notification-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.notification-item {
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.notification-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
+}
+
+.notification-unread {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.notification-button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  display: grid;
+  gap: 0.35rem;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+}
+
+.notification-button:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.7);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.notification-message {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.notification-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.notification-type {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.notification-time {
+  font-variant-numeric: tabular-nums;
+}
+
+:host-context(.my-app-dark) .notification-panel {
+  border-color: rgba(71, 85, 105, 0.6);
+  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.55);
+  background: rgba(15, 23, 42, 0.96);
+}
+
+:host-context(.my-app-dark) .panel-header {
+  background: linear-gradient(120deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.95));
+}
+
+:host-context(.my-app-dark) .panel-title {
+  color: #f8fafc;
+}
+
+:host-context(.my-app-dark) .panel-subtitle,
+:host-context(.my-app-dark) .panel-empty,
+:host-context(.my-app-dark) .notification-meta {
+  color: #94a3b8;
+}
+
+:host-context(.my-app-dark) .notification-item {
+  background: rgba(30, 41, 59, 0.75);
+}
+
+:host-context(.my-app-dark) .notification-message {
+  color: #e2e8f0;
+}
+
+:host-context(.my-app-dark) .notification-unread {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(96, 165, 250, 0.5);
+}

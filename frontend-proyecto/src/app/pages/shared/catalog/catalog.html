@@ -1,0 +1,209 @@
+<div class="catalog-container">
+  <div class="catalog-header">
+    <h1 class="catalog-title">Product Catalog</h1>
+    <p class="catalog-subtitle">
+      @if (isClient) {
+        Explore available products and add them to your order.
+      } @else {
+        Explore all available products.
+      }
+    </p>
+
+    <div class="header-actions">
+      <div class="search-wrapper">
+        <div class="search-container">
+          <i class="pi pi-search search-icon"></i>
+          <input
+            pInputText
+            type="text"
+            class="minimal-input"
+            [placeholder]="isEmployee ? 'Search by name or code (#123)...' : 'Search products...'"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="search()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (isClient && gasolineProducts.length > 0) {
+    <div class="gasoline-section">
+      @for (fuel of gasolineProducts; track fuel.id) {
+        <app-card class="gasoline-card" [cardStyle]="{ 'min-height': 'unset' }">
+          <ng-template #cardTitle>
+            <h2 class="product-title">{{ fuel.name }}</h2>
+          </ng-template>
+          <p class="product-description">{{ fuel.description }}</p>
+          <ng-template #cardFooter>
+            <div class="product-footer">
+              <strong class="product-price">{{ fuel.salePrice | number: '1.3-3' }} €/liter</strong>
+              <div class="gasoline-actions">
+                <p-inputNumber
+                  [(ngModel)]="litersMap[fuel.id]"
+                  [min]="1"
+                  [max]="200"
+                  suffix=" L"
+                  [showButtons]="true"
+                  buttonLayout="stacked"
+                />
+                <p-button
+                  label="Add to Cart"
+                  icon="pi pi-shopping-cart"
+                  (onClick)="addToCart(fuel)"
+                />
+              </div>
+            </div>
+          </ng-template>
+        </app-card>
+      }
+    </div>
+  }
+
+  <div class="category-filters">
+    <p-button
+      label="All"
+      [rounded]="true"
+      [severity]="selectedCategoryId === null ? 'primary' : 'secondary'"
+      [outlined]="selectedCategoryId !== null"
+      (onClick)="selectCategory(null)"
+    />
+
+    @for (cat of categories; track cat.id) {
+      <p-button
+        [label]="cat.name"
+        [rounded]="true"
+        [severity]="selectedCategoryId === cat.id ? 'primary' : 'secondary'"
+        [outlined]="selectedCategoryId !== cat.id"
+        (onClick)="selectCategory(cat.id)"
+      />
+    }
+  </div>
+
+  <div class="sort-controls">
+    <span class="sort-label">Sort by:</span>
+
+    @for (option of sortFieldOptions; track option.value) {
+      <button
+        class="sort-btn"
+        [class.active]="sortField === option.value"
+        (click)="setSortField(option.value)"
+      >
+        {{ option.label }}
+        @if (sortField === option.value) {
+          <i
+            class="pi"
+            [class.pi-sort-amount-up]="sortOrder === 'asc'"
+            [class.pi-sort-amount-down]="sortOrder === 'desc'"
+          >
+          </i>
+        }
+      </button>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="loading-container">
+      <p-progressSpinner ariaLabel="Loading products"></p-progressSpinner>
+    </div>
+  }
+
+  @if (error) {
+    <div class="error-container">
+      <p-message severity="error" [text]="error"></p-message>
+    </div>
+  }
+
+  @if (!loading && !error) {
+    <div class="products-grid">
+      @for (product of filteredProducts; track product.id) {
+        <app-card
+          class="h-full"
+          [class.product-card-clickable]="isClient"
+          [clickable]="isClient"
+          (cardClick)="openDetail(product)"
+        >
+          <ng-template #cardHeader>
+            <div class="product-header">
+              <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
+            </div>
+          </ng-template>
+          <ng-template #cardTitle>
+            <h2 class="product-title">{{ product.name }}</h2>
+          </ng-template>
+
+          <p class="product-description">{{ product.description }}</p>
+
+          <ng-template #cardFooter>
+            <div class="product-footer">
+              <strong class="product-price">{{ product.salePrice | number: '1.2-2' }} €</strong>
+              <div class="product-actions">
+                <p-tag
+                  [value]="product.currentStock > 0 ? 'Available' : 'Out of Stock'"
+                  [severity]="product.currentStock > 0 ? 'success' : 'danger'"
+                  [rounded]="true"
+                >
+                </p-tag>
+
+                @if (isClient) {
+                  <p-button
+                    icon="pi pi-shopping-cart"
+                    [rounded]="true"
+                    [disabled]="product.currentStock === 0"
+                    (onClick)="$event.stopPropagation(); addToCart(product)"
+                  />
+                }
+              </div>
+            </div>
+          </ng-template>
+        </app-card>
+      } @empty {
+        <p class="no-products">No products found.</p>
+      }
+    </div>
+  }
+</div>
+
+@if (isClient) {
+  <p-dialog
+    [(visible)]="detailVisible"
+    [modal]="true"
+    [closable]="true"
+    [dismissableMask]="true"
+    header="Product Details"
+    [style]="{ width: '480px' }"
+  >
+    @if (selectedProduct) {
+      <div class="detail-info">
+        <div class="detail-row">
+          <span class="detail-label">Name</span>
+          <span>{{ selectedProduct.name }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Category</span>
+          <span>{{ getCategoryName(selectedProduct.categoryId) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Description</span>
+          <span>{{ selectedProduct.description || '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Stock</span>
+          <span>{{ selectedProduct.currentStock }} units</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Price</span>
+          <strong>{{ selectedProduct.salePrice | number: '1.2-2' }} €</strong>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <p-button
+          label="Add to Cart"
+          icon="pi pi-shopping-cart"
+          [disabled]="selectedProduct.currentStock === 0"
+          (onClick)="addToCart(selectedProduct); detailVisible = false"
+        >
+        </p-button>
+      </div>
+    }
+  </p-dialog>
+}

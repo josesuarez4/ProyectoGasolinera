@@ -1,0 +1,123 @@
+<section class="admin-analytics-page" aria-label="Administrator Catalogue Analysis">
+
+  <header class="page-header mb-6">
+    <div>
+      <h1 class="text-4xl font-bold m-0 text-900">Catalogue Analytics</h1>
+      <p class="text-500 mt-2 font-medium">
+        Advanced insights combining sales, inventory and supplier history
+        <span class="badge-admin">Admin Only</span>
+      </p>
+    </div>
+    <div class="header-actions flex gap-3">
+      <p-button
+        [label]="hideInactive() ? 'Showing: Activity Only' : 'Showing: All Products'"
+        [icon]="hideInactive() ? 'pi pi-filter' : 'pi pi-filter-slash'"
+        (onClick)="hideInactive.set(!hideInactive())"
+        severity="secondary"
+        [outlined]="!hideInactive()">
+      </p-button>
+      <p-button
+        label="Refresh Data"
+        icon="pi pi-refresh"
+        [loading]="loading()"
+        (onClick)="loadData()"
+        severity="secondary">
+      </p-button>
+    </div>
+  </header>
+
+  <div class="metrics-overview">
+
+    <div class="metric-card">
+      <div class="metric-card__icon-wrap metric-card__icon-wrap--products">
+        <i class="pi pi-list"></i>
+      </div>
+      <div>
+        <span class="metric-card__label">Analyzed Products</span>
+        <div class="metric-card__value">{{ filteredData().length }}</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-card__icon-wrap metric-card__icon-wrap--revenue">
+        <i class="pi pi-dollar"></i>
+      </div>
+      <div>
+        <span class="metric-card__label">Monthly Revenue</span>
+        <div class="metric-card__value">{{ formatCurrency(totalRevenue()) }}</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-card__icon-wrap metric-card__icon-wrap--sales">
+        <i class="pi pi-shopping-bag"></i>
+      </div>
+      <div>
+        <span class="metric-card__label">Monthly Sales (units)</span>
+        <div class="metric-card__value">{{ totalSales() | number }}</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-card__icon-wrap metric-card__icon-wrap--stock">
+        <i class="pi pi-exclamation-triangle"></i>
+      </div>
+      <div>
+        <span class="metric-card__label">Low Stock Products</span>
+        <div class="metric-card__value metric-card__value--warn">{{ lowStockCount() }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table-container mt-4">
+    <app-table
+      entityLabel="Product Analytics"
+      title="Product Performance Report"
+      description="Live metrics crossing sales tickets from the current month with latest supplier costs. Click Forecast on any product to view the AI demand projection."
+      [loading]="loading()"
+      [rows]="filteredData()"
+      [columns]="columns"
+      [actions]="actions"
+      (actionTriggered)="handleAction($event)"
+      [rowClickable]="false">
+    </app-table>
+  </div>
+
+  <p-dialog
+    [header]="'Demand Forecast — ' + selectedProductName()"
+    [visible]="showPredictionDialog()"
+    (visibleChange)="showPredictionDialog.set($event)"
+    [modal]="true"
+    [style]="{ width: '900px', maxWidth: '96vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="forecast-dialog">
+
+    <app-sales-projection
+      [prediction]="currentPrediction()"
+      [historicalPoints]="currentHistorical()"
+      [currentStock]="currentStock()"
+      [productName]="selectedProductName()"
+      [loading]="predictionLoading()">
+    </app-sales-projection>
+
+    <ng-template pTemplate="footer">
+      <div class="dialog-footer">
+        <span class="dialog-footer__hint">
+          <i class="pi pi-info-circle"></i>
+          Projections based on 7-day horizon with seasonal factors applied.
+        </span>
+        <p-button
+          label="Close"
+          icon="pi pi-times"
+          (onClick)="showPredictionDialog.set(false)"
+          severity="secondary"
+          [outlined]="true">
+        </p-button>
+      </div>
+    </ng-template>
+
+  </p-dialog>
+
+</section>

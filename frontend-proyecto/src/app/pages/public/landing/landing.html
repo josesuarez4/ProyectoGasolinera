@@ -1,0 +1,57 @@
+<div class="landing-container">
+
+
+  <section class="hero-section">
+    <div class="hero-inner">
+      <h1>GAS STATION</h1>
+      <p>Drive more, worry less.</p>
+      <div class="hero-btns">
+        @if (!isLoggedIn()) {
+        <p-button label="Create account" icon="pi pi-user-plus" size="large" [routerLink]="'/register'"></p-button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Section about us with carrousel -->
+  <section id="nosotros" class="section-about">
+    <div class="content-wrapper">
+      <div class="about-grid">
+        <div class="image-placeholder">
+          <p-carousel [value]="images()" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000"
+            [showIndicators]="true" class="about-carousel">
+            <ng-template pTemplate="item" let-item>
+              <img [src]="item.src" [alt]="item.alt" class="about-img" />
+            </ng-template>
+          </p-carousel>
+        </div>
+        <div class="text-content">
+          <h2 class="section-title">About us</h2>
+          <p class="p-text">At <strong>Gas Station Adeje</strong>, we are dedicated to transforming raw data into
+            strategic decisions. We are experts in creating digital ecosystems that allow companies to scale in an
+            organized manner.</p>
+          <p class="p-text">We believe in transparency, code robustness, and interface efficiency. Our platform is
+            the result of years of refinement in inventory management and loyalty programs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="section-services">
+    <div class="content-wrapper">
+      <h2 class="section-title text-center">Our services</h2>
+      <div class="cards-grid">
+        @for (item of servicios(); track item.title) {
+        <app-card [header]="item.title" class="service-card">
+          <ng-template #cardSubtitle>
+            <i [class]="item.icon + ' card-icon'" aria-hidden="true"></i>
+          </ng-template>
+          <p>{{ item.desc }}</p>
+        </app-card>
+        }
+      </div>
+    </div>
+  </section>
+
+</div>

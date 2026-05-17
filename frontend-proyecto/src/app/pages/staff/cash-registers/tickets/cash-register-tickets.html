@@ -1,0 +1,88 @@
+<section class="staff-cash-register-tickets">
+  <header class="tickets-header">
+    <div>
+      <p class="eyebrow">Management</p>
+      <h2>Cash Register Tickets</h2>
+      <p class="subtitle">Tickets associated to the selected cash register</p>
+      
+      <p-button
+        label="Back to cash registers"
+        icon="pi pi-arrow-left"
+        severity="secondary"
+        [text]="true"
+        routerLink="/staff/cash-registers"
+        styleClass="back-button-mt"
+      ></p-button>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="p-message p-message-error mb-4" role="alert">
+      <span class="p-message-icon pi pi-times-circle"></span>
+      <span class="p-message-detail">{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <div class="filters-bar">
+    <div class="search-container">
+      <i class="pi pi-search search-icon"></i>
+      <input
+        type="text"
+        pInputText
+        [ngModel]="searchCode()"
+        (ngModelChange)="searchCode.set($event)"
+        placeholder="Search by code..."
+        class="minimal-input"
+      />
+    </div>
+
+    <p-select
+      [options]="paymentOptions"
+      [ngModel]="filterPayment()"
+      (ngModelChange)="filterPayment.set($event)"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Payment"
+      styleClass="filter-select"
+    />
+
+    <p-select
+      [options]="onlineOptions"
+      [ngModel]="filterOnline()"
+      (ngModelChange)="filterOnline.set($event)"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Origin"
+      styleClass="filter-select"
+    />
+
+    <p-button
+      label="Clear"
+      icon="pi pi-times"
+      [text]="true"
+      severity="secondary"
+      (onClick)="clearFilters()"
+    />
+  </div>
+
+  @if (cashRegisterId(); as registerId) {
+    <div class="register-badge">
+      <span class="register-badge-label">Cash Register</span>
+      <span class="register-badge-value">#{{ registerId }}</span>
+    </div>
+  }
+
+  <app-table
+    title="Register Tickets"
+    entityLabel="tickets"
+    [loading]="loading()"
+    [rows]="filteredTickets"
+    [columns]="ticketColumns"
+    [paginator]="true"
+    [rowsPerPage]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tickets"
+    emptyMessage="No tickets found for this cash register."
+  ></app-table>
+</section>

@@ -1,0 +1,141 @@
+<section class="new-supplier-order-page" aria-label="New Supplier Order Form">
+  <header class="page-header">
+    <div class="header-content">
+      <p-button icon="pi pi-arrow-left" [text]="true" severity="secondary" routerLink="/staff/orders"
+        ariaLabel="Go back to orders" styleClass="back-button"></p-button>
+      <div>
+        <h2>Create Supplier Order</h2>
+        <p>Request products from a supplier. You can select existing items or add new ones.</p>
+      </div>
+    </div>
+  </header>
+
+  <form [formGroup]="orderForm" (ngSubmit)="submitOrder()" class="order-form">
+    @if (error()) {
+    <div class="error-message">
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>{{ error() }}</span>
+    </div>
+    }
+
+    <div class="form-section">
+      <div class="field">
+        <label for="supplierName">Supplier Name</label>
+        <input pInputText id="supplierName" formControlName="supplierName" placeholder="Enter supplier name"
+          class="w-full" />
+        @if (orderForm.get('supplierName')?.invalid && orderForm.get('supplierName')?.touched) {
+        <small class="error-text">Supplier name is required (min 2 characters).</small>
+        }
+      </div>
+    </div>
+
+    <div class="items-section">
+      <div class="items-header">
+        <h3>Order Items</h3>
+        <p-button label="Add Item" icon="pi pi-plus" severity="secondary" [outlined]="true" (onClick)="addItem()"
+          type="button"></p-button>
+      </div>
+
+      <div formArrayName="items" class="items-list">
+        @for (item of items.controls; track $index) {
+        <div [formGroupName]="$index" class="item-row">
+          <div class="item-header">
+            <span class="item-title">Item {{ $index + 1 }}</span>
+            @if (items.length > 1) {
+            <p-button icon="pi pi-trash" severity="danger" [text]="true" (onClick)="removeItem($index)" type="button"
+              ariaLabel="Remove item"></p-button>
+            }
+          </div>
+
+          <div class="item-fields">
+            <div class="field checkbox-field">
+              <p-checkbox formControlName="isNewProduct" [binary]="true" inputId="newProduct{{$index}}"></p-checkbox>
+              <label for="newProduct{{$index}}">Product does not exist in inventory</label>
+            </div>
+
+            @if (!item.get('isNewProduct')?.value) {
+            <div class="field">
+              <label>Select Product</label>
+              <p-select [options]="products()" formControlName="productId" optionLabel="name" optionValue="id"
+                placeholder="Select a product" styleClass="w-full" [filter]="true" filterBy="name"></p-select>
+            </div>
+            } @else {
+            <div class="field">
+              <label>New Product Name</label>
+              <input pInputText formControlName="productName" placeholder="Enter new product name" class="w-full" />
+            </div>
+
+            <div class="field">
+              <label>Product Description (optional)</label>
+              <input pInputText formControlName="productDescription"
+                placeholder="Enter a description for the new product" class="w-full" />
+            </div>
+
+            <div class="field checkbox-field">
+              <p-checkbox formControlName="isNewCategory" [binary]="true" inputId="newCategory{{$index}}"></p-checkbox>
+              <label for="newCategory{{$index}}">Category does not exist yet</label>
+            </div>
+
+            @if (!item.get('isNewCategory')?.value) {
+            <div class="field">
+              <label>Product Category</label>
+              <p-select [options]="categories()" formControlName="categoryId" optionLabel="name" optionValue="id"
+                placeholder="Select a category" styleClass="w-full" [filter]="true" filterBy="name">
+              </p-select>
+              @if (item.get('categoryId')?.invalid && item.get('categoryId')?.touched) {
+              <small class="error-text">Category is required for new products.</small>
+              }
+            </div>
+            } @else {
+            <div class="field">
+              <label>New Category Name</label>
+              <input pInputText formControlName="categoryName" placeholder="Enter new category name" class="w-full" />
+              @if (item.get('categoryName')?.invalid && item.get('categoryName')?.touched) {
+              <small class="error-text">Category name is required.</small>
+              }
+            </div>
+            }
+            }
+
+            <div class="field-row">
+              <div class="field">
+                <label>Quantity</label>
+                <p-inputNumber formControlName="quantity" [showButtons]="true" buttonLayout="horizontal"
+                  spinnerMode="horizontal" [min]="1" inputStyleClass="w-full text-center"
+                  decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary"
+                  incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+                  styleClass="w-full"></p-inputNumber>
+              </div>
+
+              <div class="field">
+                <label>Unit Cost Price (€)</label>
+                <p-inputNumber formControlName="costPrice" mode="currency" currency="EUR" locale="es-ES" [min]="0"
+                  styleClass="w-full"></p-inputNumber>
+              </div>
+
+              <div class="field item-total">
+                <label>Item Total</label>
+                <div class="total-value">
+                  {{ formatCurrency(item.get('quantity')?.value * item.get('costPrice')?.value) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <div class="order-total">
+        <span>Total Order Price:</span>
+        <span class="total-amount">{{ formatCurrency(calculateTotal()) }}</span>
+      </div>
+      <div class="actions">
+        <p-button label="Cancel" severity="secondary" [outlined]="true" routerLink="/staff/orders"
+          type="button"></p-button>
+        <p-button label="Create" severity="primary" type="submit" [loading]="loading()"></p-button>
+      </div>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,98 @@
+<main class="staff-layout" [class.sidebar-collapsed]="!sidebarOpen()">
+  <aside class="staff-sidebar">
+    <div class="sidebar-scroll-content">
+      <div class="sidebar-top-actions" aria-label="Acciones de sesión">
+        <p-button label="Logout" icon="pi pi-sign-out" severity="danger" styleClass="sidebar-logout-button"
+          [rounded]="true" (onClick)="logout()"></p-button>
+
+        <div class="icon-actions">
+          <div class="left-icons">
+            @if (canSendNotifications()) {
+            <p-button icon="pi pi-send" severity="secondary" [rounded]="true" [text]="true" ariaLabel="Send notification"
+              (onClick)="toggleSendNotif(sendNotifMenu, $event)"></p-button>
+            }
+
+            <app-notification-center></app-notification-center>
+          </div>
+
+          <p-button [icon]="isDarkMode() ? 'pi pi-moon' : 'pi pi-sun'" [rounded]="true" styleClass="theme-toggle-btn"
+            [ariaLabel]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+            (onClick)="toggleDarkMode()"></p-button>
+        </div>
+
+        <p-menu #sendNotifMenu [popup]="true" [model]="sendNotifMenuItems()"></p-menu>
+      </div>
+
+      <h1 class="">STAFF PANEL</h1>
+
+      <nav class="section-nav" aria-label="Secciones de administración">
+        @for (section of visibleSections(); track section.id) {
+        <a class="section-link" [routerLink]="section.route" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <span class="section-icon">
+            <i [class]="section.icon"></i>
+          </span>
+
+          <span class="section-copy">
+            <strong>{{ section.title }}</strong>
+          </span>
+
+          <i class="pi pi-angle-right section-arrow"></i>
+        </a>
+        }
+      </nav>
+    </div>
+  </aside>
+
+  <section class="staff-workspace">
+    <div class="workspace-header">
+      <p-button icon="pi pi-bars" severity="secondary" [text]="true"
+        [rounded]="true" [attr.aria-label]="sidebarOpen() ? 'Hide panel' : 'Show panel'"
+        (onClick)="toggleSidebar()"></p-button>
+    </div>
+    <div class="workspace-content">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+</main>
+
+<!-- ── Send Notification Dialog ─────────────────────────────────────────── -->
+<p-dialog header="Send notification" [modal]="true" [(visible)]="showSendNotifDialog" [style]="{ width: '28rem' }"
+  [draggable]="false" [resizable]="false">
+
+  <div class="send-notif-form">
+
+    @if (sendNotifTarget() === 'user') {
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="employeeSelect" style="display: block; margin-bottom: 0.5rem;">Employee</label>
+      <p-select inputId="employeeSelect" [options]="employees()" [(ngModel)]="selectedEmployeeId" optionLabel="name"
+        optionValue="id" placeholder="Select an employee" [style]="{ width: '100%' }" appendTo="body">
+      </p-select>
+    </div>
+    }
+
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="notifType" style="display: block; margin-bottom: 0.5rem;">Notification type</label>
+      <p-select inputId="notifType" [options]="notifTypes" [(ngModel)]="selectedNotifType" optionLabel="label"
+        optionValue="value" [style]="{ width: '100%' }" appendTo="body">
+      </p-select>
+    </div>
+
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="notifMessage" style="display: block; margin-bottom: 0.5rem;">Message</label>
+      <textarea pTextarea id="notifMessage" [(ngModel)]="notifMessage" rows="4" placeholder="Write your message..."
+        style="width: 100%; resize: vertical;">
+      </textarea>
+    </div>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" severity="secondary" [text]="true"
+      (onClick)="showSendNotifDialog.set(false)">
+    </p-button>
+    <p-button label="Send" icon="pi pi-send" styleClass="dialog-primary-btn" [loading]="isSendingNotif()"
+      [disabled]="!canSubmitNotif" (onClick)="submitNotification()">
+    </p-button>
+  </ng-template>
+</p-dialog>

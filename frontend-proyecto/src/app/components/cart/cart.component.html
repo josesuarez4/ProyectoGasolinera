@@ -1,0 +1,150 @@
+<!-- Cart drawer — renders globally above all routes -->
+<p-drawer [(visible)]="cartVisible" position="right" [header]="lastOrder() ? 'Order placed!' : 'Your Cart'"
+  [style]="{ width: '420px' }">
+
+  <!-- ── Order confirmation view ──────────────────────────────────────────── -->
+  @if (lastOrder()) {
+  <div class="order-confirmation">
+
+    <div class="confirmation-header">
+      <i class="pi pi-check-circle confirmation-header__icon"></i>
+      <p class="confirmation-header__subtitle">Order #{{ lastOrder()!.id }}</p>
+      <p class="confirmation-header__status">{{ getStatusLabel(lastOrder()!.status) }}</p>
+    </div>
+
+    <!-- Items list -->
+    <ul class="confirmation-items">
+      @for (item of lastOrder()!.details; track item.productId) {
+      <li class="confirmation-item">
+        <span class="confirmation-item__name">{{ item.productName }}</span>
+        <span class="confirmation-item__qty">× {{ item.quantity }}</span>
+        <span class="confirmation-item__price">
+          {{ item.salePrice * item.quantity | currency:'EUR':'symbol':'1.2-2' }}
+        </span>
+      </li>
+      }
+    </ul>
+
+    <p-divider />
+
+    <div class="confirmation-total">
+      <span>Total</span>
+      <span>{{ lastOrder()!.totalPrice | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+
+    @if (lastOrder()!.maxPickupDate) {
+    <div class="confirmation-pickup">
+      <i class="pi pi-calendar"></i>
+      <span>Recogida máxima: <strong>{{ lastOrder()!.maxPickupDate | date:'mediumDate' }}</strong></span>
+    </div>
+    }
+
+    <div class="confirmation-actions">
+      @if (lastOrder()!.status.toUpperCase() === 'PENDING') {
+      <p-button label="Cancelar pedido" icon="pi pi-times-circle" severity="danger" [outlined]="true"
+        styleClass="w-full" [loading]="cancellingOrder()" (onClick)="cancelLastOrder()">
+      </p-button>
+      }
+      <p-button label="Cerrar" icon="pi pi-times" severity="secondary" styleClass="w-full"
+        (onClick)="dismissConfirmation()">
+      </p-button>
+    </div>
+
+  </div>
+  }
+
+  <!-- ── Cart content ─────────────────────────────────────────────────────── -->
+  @if (!lastOrder()) {
+
+  <!-- Empty state -->
+  @if (cart.itemCount() === 0) {
+  <div class="cart-empty">
+    <i class="pi pi-shopping-cart cart-empty__icon"></i>
+    <p class="cart-empty__message">Your cart is empty</p>
+  </div>
+  }
+
+  <!-- Item list -->
+  @if (cart.itemCount() > 0) {
+  <ul class="cart-items">
+    @for (item of cart.items(); track item.productId) {
+    <li class="cart-item">
+
+      <!-- Product name + unit price -->
+      <div class="cart-item__info">
+        <span class="cart-item__name">{{ item.name }}</span>
+        <span class="cart-item__unit-price">
+          {{ item.price | currency:'EUR':'symbol':'1.2-2' }} / unit
+        </span>
+      </div>
+
+      <!-- Quantity controls -->
+      <div class="cart-item__controls">
+        <p-button icon="pi pi-minus" [text]="true" size="small" severity="secondary"
+          [attr.aria-label]="'Decrease quantity of ' + item.name"
+          (onClick)="cart.updateQuantity(item.productId, item.quantity - 1)">
+        </p-button>
+        <span class="cart-item__qty">{{ item.quantity }}</span>
+        <p-button icon="pi pi-plus" [text]="true" size="small" severity="secondary"
+          [attr.aria-label]="'Increase quantity of ' + item.name" [disabled]="item.quantity >= item.stock"
+          (onClick)="cart.updateQuantity(item.productId, item.quantity + 1)">
+        </p-button>
+      </div>
+
+      <!-- Line total + delete -->
+      <div class="cart-item__right">
+        <span class="cart-item__line-total">
+          {{ item.price * item.quantity | currency:'EUR':'symbol':'1.2-2' }}
+        </span>
+        <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger"
+          [attr.aria-label]="'Remove ' + item.name + ' from cart'" (onClick)="cart.removeItem(item.productId)">
+        </p-button>
+      </div>
+
+    </li>
+    }
+  </ul>
+
+  <p-divider />
+
+  <!-- Order summary -->
+  <div class="cart-summary">
+    <div class="cart-summary__row">
+      <span>Subtotal</span>
+      <span>{{ cart.subtotal() | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+    <div class="cart-summary__row cart-summary__row--tax">
+      <span>IGIC (7 %)</span>
+      <span>{{ cart.taxAmount() | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+    <p-divider />
+    <div class="cart-summary__row cart-summary__row--total">
+      <span>Total</span>
+      <span>{{ cart.total() | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Notification time -->
+  <div class="cart-notification" style="margin-bottom: 1.5rem;">
+    <label for="notificationTime"
+      style="display:block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 500;">Pickup notification date &
+      time:</label>
+    <p-datepicker id="notificationTime" [ngModel]="notificationTime()" (ngModelChange)="notificationTime.set($event)"
+      [showTime]="true" [touchUI]="true" [minDate]="minDate" [maxDate]="maxDate" appendTo="body" placeholder="Select date and time" styleClass="w-full">
+    </p-datepicker>
+  </div>
+
+  <!-- Actions -->
+  <div class="cart-actions">
+    <p-button label="Place Order" icon="pi pi-check" severity="success" styleClass="w-full" [loading]="placingOrder()"
+      (onClick)="placeOrder()">
+    </p-button>
+    <p-button label="Clear cart" icon="pi pi-trash" severity="danger" [outlined]="true" styleClass="w-full"
+      (onClick)="cart.clearCart()">
+    </p-button>
+  </div>
+  }
+
+  }
+
+</p-drawer>

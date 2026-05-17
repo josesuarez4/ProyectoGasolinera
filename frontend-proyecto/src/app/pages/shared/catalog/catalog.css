@@ -1,0 +1,464 @@
+p {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0 auto;
+}
+
+/* ── Container ── */
+.catalog-container {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+  background: #ffffff;
+  background-attachment: fixed;
+}
+
+/* ── Header ── */
+.catalog-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.catalog-title {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4d9fff 0%, #0d2b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.catalog-subtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* ── Search ── */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+}
+
+.minimal-input {
+  width: 100%;
+  padding: 12px 16px 12px 45px !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: all 0.2s ease-in-out;
+  color: #1e293b;
+  box-shadow:
+    0 4px 16px rgba(26, 79, 189, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.minimal-input::placeholder {
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.minimal-input:focus {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-color: rgba(26, 79, 189, 0.5) !important;
+  box-shadow:
+    0 0 0 3px rgba(26, 79, 189, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: #1a4fbd;
+  font-size: 1.1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Category Filters ── */
+.category-filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.gasoline-section {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+:host ::ng-deep .gasoline-card {
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 79, 189, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+.gasoline-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep .category-filters .p-button {
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 6px 20px !important;
+  transition: all 0.2s ease !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+:host ::ng-deep .category-filters .p-button:not(.p-button-outlined) {
+  background: #1e40af !important;
+  border-color: #6677ae !important;
+  color: #ffffff !important;
+}
+
+:host ::ng-deep .category-filters .p-button.p-button-outlined {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: #6677ae !important;
+  color: #1a4fbd !important;
+}
+
+:host ::ng-deep .category-filters .p-button.p-button-outlined:hover {
+  background: rgba(26, 79, 189, 0.1) !important;
+  border-color: rgba(26, 79, 189, 0.5) !important;
+}
+
+/* ── States ── */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.error-container {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* ── Products Grid ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 500px);
+  gap: 32px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+:host ::ng-deep .products-grid .p-card {
+  height: 100%;
+  text-align: center;
+  min-height: 0;
+  border-radius: 20px !important;
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 79, 189, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+:host ::ng-deep .products-grid .p-card:hover {
+  transform: translateY(-8px);
+  background: #ffffff !important;
+  box-shadow:
+    0 24px 48px rgba(26, 79, 189, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.06) !important;
+  border-color: #ffffff !important;
+}
+
+/* ── Product internals ── */
+.product-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.product-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #1e40af;
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  display: inline-block;
+  border: 1px solid #1e3a8a;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.product-description {
+  color: #475569;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+  min-height: 4.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a4fbd;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Empty state ── */
+.no-products {
+  text-align: center;
+  color: #94a3b8;
+  grid-column: 1 / -1;
+  padding: 4rem 0;
+  font-size: 1.125rem;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto 1.5rem auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sort-label {
+  font-size: 0.875rem;
+  color: var(--text-color-secondary, #6b7280);
+  font-weight: 500;
+}
+
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--surface-border, #e5e7eb);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--text-color, #374151);
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  background: var(--surface-hover, #f3f4f6);
+}
+
+.sort-btn.active {
+  background: #1e40af;
+  color: white;
+  border-color: #6677ae;
+}
+
+.product-card-clickable {
+  cursor: pointer;
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 1rem;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 0.875rem;
+  min-width: 90px;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+:host-context(.my-app-dark) .catalog-container {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 48%, #0d2b6b 100%);
+}
+
+:host-context(.my-app-dark) p,
+:host-context(.my-app-dark) .catalog-subtitle,
+:host-context(.my-app-dark) .sort-label {
+  color: #cbd5e1;
+}
+
+:host-context(.my-app-dark) .catalog-title {
+  background: linear-gradient(135deg, #93c5fd 0%, #dbeafe 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:host-context(.my-app-dark) .minimal-input {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border: 1px solid rgba(100, 116, 139, 0.52) !important;
+  color: #f8fafc !important;
+  box-shadow:
+    0 4px 16px rgba(2, 6, 23, 0.35),
+    inset 0 1px 0 rgba(148, 163, 184, 0.2) !important;
+}
+
+:host-context(.my-app-dark) .minimal-input::placeholder {
+  color: #94a3b8;
+}
+
+:host-context(.my-app-dark) .minimal-input:focus {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: #60a5fa !important;
+  box-shadow:
+    0 0 0 3px rgba(96, 165, 250, 0.24),
+    inset 0 1px 0 rgba(148, 163, 184, 0.28) !important;
+}
+
+:host-context(.my-app-dark) .search-icon {
+  color: #93c5fd;
+}
+
+:host ::ng-deep .p-button {
+  background-color: #1e40af !important;
+  color: white !important;
+  border-color: #1e40af !important;
+}
+
+:host ::ng-deep .p-button:hover {
+  background-color: #66adff !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .category-filters .p-button.p-button-outlined {
+  background: rgba(15, 23, 42, 0.62) !important;
+  border-color: #6677ae !important;
+  color: #bfdbfe !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .category-filters .p-button.p-button-outlined:hover {
+  background: rgba(30, 58, 138, 0.35) !important;
+  border-color: #6677ae !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-card {
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(100, 116, 139, 0.42) !important;
+  box-shadow:
+    0 14px 34px rgba(2, 6, 23, 0.42),
+    0 4px 14px rgba(2, 6, 23, 0.2) !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-card:hover {
+  background: rgba(15, 23, 42, 0.96) !important;
+  box-shadow:
+    0 22px 46px rgba(2, 6, 23, 0.56),
+    0 8px 18px rgba(2, 6, 23, 0.28) !important;
+  border-color: rgba(147, 197, 253, 0.45) !important;
+}
+
+:host-context(.my-app-dark) .product-title,
+:host-context(.my-app-dark) .product-description,
+:host-context(.my-app-dark) .product-price {
+  color: #f8fafc;
+}
+
+:host-context(.my-app-dark) .product-description {
+  color: #cbd5e1;
+}
+
+:host-context(.my-app-dark) .product-footer {
+  border-top: 1px solid rgba(100, 116, 139, 0.4);
+}
+
+:host-context(.my-app-dark) .product-image {
+  background: rgba(30, 41, 59, 0.85);
+}
+
+:host-context(.my-app-dark) .product-image-placeholder,
+:host-context(.my-app-dark) .no-products {
+  color: #94a3b8;
+}
+
+:host-context(.my-app-dark) .sort-btn {
+  background: rgba(15, 23, 42, 0.62);
+  border-color: rgba(100, 116, 139, 0.55);
+  color: #cbd5e1;
+}
+
+:host-context(.my-app-dark) .sort-btn:hover {
+  background: rgba(51, 65, 85, 0.82);
+}
+
+:host-context(.my-app-dark) .sort-btn.active {
+  background: #1e40af;
+  border-color: #6677ae;
+  color: #ffffff;
+}

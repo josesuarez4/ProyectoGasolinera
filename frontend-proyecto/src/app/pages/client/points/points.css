@@ -1,0 +1,233 @@
+/* ── Container ── */
+.points-container {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  min-height: 100vh;
+  background: transparent;
+  width: min(94%, 1200px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.points-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  background: linear-gradient(90deg,
+      #f8fafc 0%,
+      #eef2ff 12%,
+      #ffffff 50%,
+      #eef2ff 88%,
+      #f8fafc 100%);
+}
+
+:host-context(.my-app-dark) .points-container {
+  background: transparent;
+}
+
+:host-context(.my-app-dark) .points-container::before {
+  background: linear-gradient(90deg,
+      #020617 0%,
+      #0f172a 12%,
+      #020617 50%,
+      #0f172a 88%,
+      #020617 100%);
+}
+
+/* ── Header ── */
+.points-header {
+  text-align: center;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.points-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+/* ── Badge de puntos ── */
+.user-points-badge {
+  background: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #1e293b;
+}
+
+:host-context(.my-app-dark) .user-points-badge {
+  background: rgba(15, 23, 42, 0.78);
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+.user-points-badge i {
+  color: #f59e0b;
+  font-size: 1.5rem;
+}
+
+/* ── Grid y Tarjetas ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.product-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+:host-context(.my-app-dark) .product-card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.42);
+  box-shadow:
+    0 14px 34px rgba(2, 6, 23, 0.42),
+    0 4px 14px rgba(2, 6, 23, 0.2);
+}
+
+:host-context(.my-app-dark) .product-card:hover {
+  background: rgba(15, 23, 42, 0.97);
+  border-color: rgba(147, 197, 253, 0.45);
+  box-shadow:
+    0 22px 46px rgba(2, 6, 23, 0.56),
+    0 8px 18px rgba(2, 6, 23, 0.28);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(79, 70, 229, 0.4);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.product-info h3 {
+  font-size: 1.25rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+:host-context(.my-app-dark) .product-info h3 {
+  color: #e2e8f0;
+}
+
+.description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+:host-context(.my-app-dark) .description {
+  color: #94a3b8;
+}
+
+/* ── Precios y Stock ── */
+.price-section {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:host-context(.my-app-dark) .price-section {
+  background: #1e293b;
+}
+
+.point-cost {
+  color: #4f46e5;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.point-cost small {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.stock-info {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+:host-context(.my-app-dark) .stock-info {
+  color: #94a3b8;
+}
+
+/* ── Botones ── */
+.btn-redeem {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-redeem:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-redeem:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+:host-context(.my-app-dark) .btn-redeem:disabled {
+  background: #1e293b;
+  color: #475569;
+}
+
+/* ── Badges ── */
+.badge-out {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}

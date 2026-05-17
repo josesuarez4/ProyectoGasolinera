@@ -1,0 +1,64 @@
+.container.container-admin {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding-top: 13rem;
+  }
+
+  .container.container-admin {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 540px) {
+  .container {
+    padding-top: 8rem;
+  }
+
+  .container.container-admin {
+    padding-top: 0;
+  }
+}
+
+/* --- Toast Progress Bar (Global) --- */
+.p-toast-message {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px !important;
+}
+
+.p-toast-message-content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: #10b981; /* Success green */
+  animation: toast-progress 3000ms linear forwards;
+  z-index: 999;
+}
+
+.p-toast-message-error .p-toast-message-content::after {
+  background: #ef4444; /* Error red */
+}
+
+.p-toast-message-info .p-toast-message-content::after {
+  background: #3b82f6; /* Info blue */
+}
+
+.p-toast-message-warn .p-toast-message-content::after {
+  background: #f59e0b; /* Warning amber */
+}
+
+@keyframes toast-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}

@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+.staff-clients-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.clients-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.clients-header p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+
+
+.messages-container {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.status-message {
+  padding: 0.75rem 1rem;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  padding: 0.75rem 1rem;
+  background-color: #fee2e2;
+  color: #7f1d1d;
+  border: 1px solid #fca5a5;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+
+
+.status-message {
+  background-color: #064e3b;
+  color: #d1fae5;
+  border-color: #059669;
+}
+
+.error-message {
+  background-color: #7f1d1d;
+  color: #fee2e2;
+  border-color: #dc2626;
+}
+
+.dialog-content {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.dialog-header {
+  border-bottom-color: rgba(148, 163, 184, 0.16);
+}
+
+.dialog-header h3 {
+  color: #e2e8f0;
+}
+
+.close-button {
+  color: #94a3b8;
+}
+
+.close-button:hover {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: #e2e8f0;
+}
+
+
+@media (max-width: 700px) {
+  .clients-filters {
+    width: 100%;
+  }
+}

@@ -1,0 +1,59 @@
+<div class="landing-container">
+    <div *ngIf="loading" class="spinner-container">
+        <p-progressSpinner></p-progressSpinner>
+        <p style="margin-top: 1rem; color: #ffffff;">Loading station information...</p>
+    </div>
+
+    <div *ngIf="!loading && gasolineras.length > 0" class="hero-container">
+        <div class="hero-section" *ngFor="let station of gasolineras">
+            <div class="hero-content">
+                <span class="hero-tag">OUR STATION</span>
+                <h1 class="hero-title">GAS STATION</h1>
+                <p class="hero-subtitle">
+                    <i class="pi pi-map-marker" style="margin-right: 0.25rem;"></i> {{ station['Dirección'] }}, {{
+                    station['Localidad'] }}, {{ station['Provincia'] }}
+                </p>
+
+                <p-tag [value]="'Open: ' + (station['HorarioFormateado'] || station['Horario'])"
+                    styleClass="status-badge-custom" [rounded]="true">
+                </p-tag>
+
+                <div class="best-offer-badge">
+                    <app-card styleClass="top-choice-card">
+                        <div class="main-price-row">
+                            <!-- Gasolina 95 -->
+                            <div class="price-block" *ngIf="station['Precio Gasolina 95 E5']">
+                                <span class="fuel-name fuel-g95"><span class="dot g95"></span>Gasolina 95</span>
+                                <div class="price-container">
+                                    <span class="price-value">{{ station['Precio Gasolina 95 E5'] }}</span>
+                                    <span class="currency">€/L</span>
+                                </div>
+                            </div>
+
+                            <div class="price-divider"
+                                *ngIf="station['Precio Gasolina 95 E5'] && station['Precio Gasoleo A']"></div>
+
+                            <!-- Diésel A -->
+                            <div class="price-block" *ngIf="station['Precio Gasoleo A']">
+                                <span class="fuel-name fuel-diesel"><span class="dot diesel"></span>Diésel A</span>
+                                <div class="price-container">
+                                    <span class="price-value diesel-value">{{ station['Precio Gasoleo A'] }}</span>
+                                    <span class="currency">€/L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer text inline, avoiding PrimeNG theme backgrounds -->
+                        <div class="card-footer-info">
+                            Updated: Today
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && gasolineras.length === 0" class="hero-section">
+        <p>No station found.</p>
+    </div>
+</div>

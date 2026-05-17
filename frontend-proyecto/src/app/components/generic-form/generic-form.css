@@ -1,0 +1,292 @@
+/* =====================================================
+   GENERIC FORM — matches staff-layout aesthetic
+   Input LEFT · Label RIGHT · Dark mode support
+   ===================================================== */
+
+/* ── Dialog overrides ── */
+:host ::ng-deep .gf-dialog .p-dialog {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 24px 48px rgba(15, 23, 42, 0.12),
+    0 8px 16px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+:host ::ng-deep .gf-dialog .p-dialog-header {
+  padding: 1.4rem 1.6rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+:host ::ng-deep .gf-dialog .p-dialog-content {
+  padding: 1.2rem 1.6rem 1.4rem;
+  background: transparent;
+}
+
+/* ── Form container ── */
+.gf-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* ── Individual field ── */
+.gf-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.gf-field--half {
+  /* when colSpan='col-6' the parent grid handles the column */
+}
+
+/* ── ROW: input (left) + label (right) ── */
+.gf-field-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Label — right side */
+.gf-label {
+  flex: 0 0 38%;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+/* Input wrapper — left side */
+.gf-input-wrap {
+  flex: 1 1 62%;
+  min-width: 0;
+}
+
+/* ── Text / email / password / date / time inputs ── */
+.gf-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 2.6rem;
+  padding: 0 0.85rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+  outline: none;
+}
+
+.gf-input:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+.gf-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── p-inputNumber override ── */
+:host ::ng-deep .gf-input-number {
+  width: 100%;
+}
+
+:host ::ng-deep .gf-input-number .p-inputnumber-input {
+  width: 100%;
+  height: 2.6rem;
+  padding: 0 0.85rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .gf-input-number .p-inputnumber-input:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+/* ── Native select ── */
+.gf-select {
+  width: 100%;
+  height: 2.6rem;
+  padding: 0 0.85rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  cursor: pointer;
+  appearance: auto;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gf-select:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+/* ── Validation error ── */
+.gf-error {
+  display: block;
+  font-size: 0.78rem;
+  color: #ef4444;
+  padding-left: calc(62% + 1rem); /* align with the input area */
+  margin-top: 0.15rem;
+}
+
+/* ── Action buttons row ── */
+.gf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+/* Save button — brand blue to match the whole app */
+:host ::ng-deep .gf-btn-save.p-button {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition:
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+:host ::ng-deep .gf-btn-save.p-button:not(:disabled):hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.35);
+}
+
+:host ::ng-deep .gf-btn-save.p-button:disabled {
+  background: rgba(29, 78, 216, 0.45);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* Cancel button */
+:host ::ng-deep .gf-btn-cancel.p-button {
+  border-radius: 0.75rem;
+  font-weight: 500;
+}
+
+/* =====================================================
+   DARK MODE — :host-context(html.my-app-dark)
+   ===================================================== */
+
+:host-context(html.my-app-dark) ::ng-deep .gf-dialog .p-dialog {
+  background: rgba(15, 23, 42, 0.96);
+  border-color: rgba(148, 163, 184, 0.14);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-dialog .p-dialog-header {
+  color: #f1f5f9;
+  border-bottom-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-dialog .p-dialog-header-icon {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-dialog .p-dialog-header-icon:hover {
+  color: #f1f5f9;
+  background: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) .gf-label {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .gf-input {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .gf-input::placeholder {
+  color: #475569;
+}
+
+:host-context(html.my-app-dark) .gf-input:focus {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-input-number .p-inputnumber-input {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-input-number .p-inputnumber-input:focus {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+:host-context(html.my-app-dark) .gf-select {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .gf-select:focus {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+:host-context(html.my-app-dark) .gf-select option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .gf-actions {
+  border-top-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) ::ng-deep .gf-dialog .p-dialog-content {
+  background: transparent;
+}

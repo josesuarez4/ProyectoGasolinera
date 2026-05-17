@@ -1,0 +1,183 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.staff-cash-register-tickets {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.tickets-header {
+  display: block;
+}
+
+.back-button-mt {
+  margin-top: 2rem !important;
+}
+
+.tickets-header h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.tickets-header .subtitle {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: #1a4fbd;
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.minimal-input {
+  width: 100%;
+  padding: 10px 16px 10px 40px !important;
+  border: 1px solid rgba(26, 79, 189, 0.2) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #1e293b;
+}
+
+.minimal-input:focus {
+  border-color: rgba(26, 79, 189, 0.5) !important;
+  outline: none;
+}
+
+:host ::ng-deep .filter-select {
+  min-width: 140px;
+}
+
+.register-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 79, 189, 0.18);
+  background: rgba(239, 246, 255, 0.8);
+}
+
+.register-badge-label {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.register-badge-value {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+:host ::ng-deep .staff-table .p-datatable-thead>tr>th {
+  background: #f8fafc;
+}
+
+@media (max-width: 640px) {
+  .tickets-header {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+/* ── Dark Mode Overrides ─────────────────────────────────────────────────── */
+
+:host-context(html.my-app-dark) {
+  .tickets-header h2 {
+    color: #ffffff;
+  }
+
+  .tickets-header .subtitle {
+    color: #94a3b8;
+  }
+
+  .filters-bar {
+    background: rgba(15, 23, 42, 0.78);
+    border-color: rgba(148, 163, 184, 0.12);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+  }
+
+  .minimal-input {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(148, 163, 184, 0.2) !important;
+  }
+
+  .search-icon {
+    color: #3b82f6;
+  }
+
+  .register-badge {
+    background: rgba(30, 64, 175, 0.15);
+    border-color: rgba(59, 130, 246, 0.25);
+  }
+
+  .register-badge-label {
+    color: #60a5fa;
+  }
+
+  .register-badge-value {
+    color: #f8fafc;
+  }
+
+  :host ::ng-deep .staff-table .p-datatable-thead>tr>th {
+    background: #1e293b;
+    color: #94a3b8;
+  }
+
+  :host ::ng-deep .staff-table .p-datatable-tbody>tr>td {
+    color: #e2e8f0;
+    border-color: rgba(148, 163, 184, 0.12);
+  }
+
+  /* PrimeNG component overrides in dark mode */
+  :host ::ng-deep .p-select,
+  :host ::ng-deep .p-inputtext {
+    background: #1e293b !important;
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    color: #e2e8f0 !important;
+  }
+
+  :host ::ng-deep .p-select-label {
+    color: #e2e8f0 !important;
+  }
+}

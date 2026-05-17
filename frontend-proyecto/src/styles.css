@@ -1,0 +1,652 @@
+@import 'primeicons/primeicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
+  --font-size-base: 16px;
+  --color-text: #0f172a;
+  --color-bg: #ffffff;
+  /* Brand primary blue — same as "New Supplier Order" button */
+  --color-primary:       #1d4ed8;
+  --color-primary-hover: #1e40af;
+  --color-primary-dark:  #3b82f6;
+}
+
+html.my-app-dark {
+  --color-text: #e2e8f0;
+  --color-bg: #020617;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Make the app root inherit font */
+app-root,
+#app-root {
+  font-family: inherit;
+}
+
+.btn-register.p-button,
+.btn-login.active-btn.p-button {
+  background: var(--color-primary);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.2);
+}
+
+.btn-register.p-button:hover,
+.btn-login.active-btn.p-button:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.3);
+}
+
+.btn-login.p-button {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+}
+
+.btn-login.p-button:not(.active-btn):hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: #000000;
+}
+
+html.my-app-dark .btn-login.p-button {
+  background: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+html.my-app-dark .btn-login.p-button:not(.active-btn):hover {
+  background: rgba(30, 41, 59, 0.8);
+  color: #f8fafc;
+}
+
+html.my-app-dark .staff-layout {
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 32%),
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 28%),
+    linear-gradient(180deg, #020617 0%, #020617 100%);
+  color: #e2e8f0;
+}
+
+html.my-app-dark .metric-card {
+  background: rgba(15, 23, 42, 0.78);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+html.my-app-dark .metric-card strong {
+  color: #e2e8f0;
+}
+
+html.my-app-dark .section-panel {
+  background: rgba(15, 23, 42, 0.76);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+html.my-app-dark .section-panel-header h3 {
+  color: #e2e8f0;
+}
+
+html.my-app-dark .section-toolbar {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+html.my-app-dark .table-frame {
+  background: #0f172a;
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+html.my-app-dark .table-head {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+/* Global filter styles to avoid FOUC and ensure consistent sizing across the staff panel */
+.orders-filters,
+.catalog-filter-bar,
+.clients-filters,
+.users-filters,
+.history-filters {
+  display: flex;
+  align-items: end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 1rem;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.filter-field {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 12rem;
+}
+
+.filter-field span {
+  font-size: 0.9rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.filter-input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.6rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.75rem;
+  background: #ffffff;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* PrimeNG dropdowns: ensure the rendered dropdown matches input sizing */
+.filter-input.p-dropdown,
+.p-dropdown.filter-input,
+.filter-input .p-dropdown,
+.filter-input ::ng-deep .p-dropdown {
+  min-height: 2.4rem;
+  height: 2.4rem;
+  min-width: 12rem;
+  max-width: 12rem;
+}
+
+.p-dropdown .p-dropdown-label {
+  height: 2.4rem;
+  line-height: 2.4rem;
+  padding: 0 0.75rem;
+}
+
+.clear-filters-button {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.6rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.85rem;
+  background: #ffffff;
+  color: #334155;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sort-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.sort-toggle-button:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+@media (max-width: 700px) {
+  .orders-filters {
+    padding: 0.75rem;
+  }
+}
+
+/* ── Dark Mode Filter Overrides ─────────────────────────────────────────── */
+html.my-app-dark {
+  .orders-filters,
+  .catalog-filter-bar,
+  .clients-filters,
+  .users-filters,
+  .history-filters {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: rgba(148, 163, 184, 0.16);
+  }
+
+  .filter-field span {
+    color: #94a3b8;
+  }
+
+  .filter-input,
+  .clear-filters-button {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    border-color: rgba(148, 163, 184, 0.2);
+    outline: none;
+  }
+
+  .filter-input option {
+    background-color: #1e293b;
+    color: #e2e8f0;
+  }
+
+  .filter-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.25);
+  }
+
+  .clear-filters-button:disabled {
+    opacity: 0.5;
+    background-color: rgba(15, 23, 42, 0.5);
+  }
+
+  .sort-toggle-button:hover {
+    background: #334155;
+    border-color: #475569;
+  }
+}
+
+/* ── Global primary-action button (dialog-primary-btn) ────────────────────
+   Used in staff-layout "Send" dialog and anywhere else with styleClass="dialog-primary-btn".
+   Matches the brand blue #1d4ed8 = var(--color-primary).
+   ─────────────────────────────────────────────────────────────────────── */
+.dialog-primary-btn.p-button {
+  background: var(--color-primary) !important;
+  border: 1px solid var(--color-primary) !important;
+  color: #ffffff !important;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.dialog-primary-btn.p-button:not(:disabled):hover {
+  background: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+}
+
+.dialog-primary-btn.p-button:disabled {
+  background: rgba(29, 78, 216, 0.45) !important;
+  border-color: rgba(29, 78, 216, 0.2) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  cursor: not-allowed !important;
+}
+
+/* ── Info Cards Utility ── */
+.info-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-primary);
+  opacity: 0.6;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+}
+
+.info-card .label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.info-card .value {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.info-card .value.highlight {
+  background: linear-gradient(90deg, var(--color-primary) 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+/* Dark Mode for Info Cards — Premium Glassmorphism */
+html.my-app-dark .info-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border-color: rgba(148, 163, 184, 0.12);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html.my-app-dark .info-card:hover {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+html.my-app-dark .info-card .label {
+  color: #94a3b8;
+}
+
+html.my-app-dark .info-card .value {
+  color: #f1f5f9;
+}
+
+html.my-app-dark .info-card .value.highlight {
+  background: linear-gradient(90deg, #60a5fa 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* ── Gradient Text Utility ── */
+.gradient-text {
+  background: linear-gradient(90deg, var(--color-primary) 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+html.my-app-dark .gradient-text {
+  background: linear-gradient(90deg, #60a5fa 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Info List Design Pattern ── */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.info-item i {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  background: rgba(30, 64, 175, 0.1);
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  flex-shrink: 0;
+}
+
+.info-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-item-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-item-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Dark Mode for Info List */
+html.my-app-dark .info-item i {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.15);
+}
+
+html.my-app-dark .info-item-label {
+  color: #94a3b8;
+}
+
+html.my-app-dark .info-item-value {
+  color: #f1f5f9;
+}
+
+.info-separator {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(226, 232, 240, 0.8) 0%, transparent 100%);
+  margin: 0.5rem 0;
+}
+
+/* ── Custom Detail Dialog ── */
+.detail-dialog-custom .p-dialog-content {
+  padding: 0 !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+html.my-app-dark .detail-dialog-custom .p-dialog-content {
+  background: #0f172a !important;
+  border-color: rgba(148, 163, 184, 0.1) !important;
+}
+
+.detail-dialog-custom .p-dialog-header {
+  display: none !important;
+}
+
+/* ── Detail Data Grid ── */
+.detail-data-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.detail-data-row {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+
+.detail-data-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: rgba(248, 250, 252, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+html.my-app-dark .detail-data-item {
+  background: rgba(30, 41, 59, 0.4);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+.detail-data-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.detail-data-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+html.my-app-dark .detail-data-value {
+  color: #ffffff !important;
+}
+
+html.my-app-dark .detail-data-label {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.detail-description-box {
+  width: 100%;
+  padding: 2rem;
+  background: rgba(248, 250, 252, 0.5);
+  border: 1px dashed rgba(203, 213, 225, 0.8);
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+html.my-app-dark .detail-description-box {
+  background: rgba(30, 41, 59, 0.2);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.detail-description-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
+html.my-app-dark .detail-description-text {
+  color: #cbd5e1;
+}
+
+/* ── Detail Table ── */
+.detail-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.detail-table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(226, 232, 240, 0.8);
+}
+
+.detail-table td {
+  padding: 1.25rem 1rem;
+  font-size: 1rem;
+  color: #0f172a;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  vertical-align: middle;
+}
+
+.detail-table tr:last-child td {
+  border-bottom: 0;
+}
+
+html.my-app-dark .detail-table th {
+  color: #94a3b8;
+  border-bottom-color: rgba(148, 163, 184, 0.2);
+}
+
+html.my-app-dark .detail-table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(148, 163, 184, 0.1);
+}
+
+.detail-table .text-secondary {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+html.my-app-dark .detail-table .text-secondary {
+  color: #94a3b8;
+}
+
+/* ── Surface Container Overrides for Dark Mode ── */
+html.my-app-dark .surface-50 {
+  background: rgba(30, 41, 59, 0.4) !important;
+  color: #e2e8f0 !important;
+}
+
+html.my-app-dark .surface-border {
+  border-color: rgba(148, 163, 184, 0.1) !important;
+}
+
+html.my-app-dark .text-700 {
+  color: #94a3b8 !important;
+}
+
+/* ── Product Image Utilities ── */
+.product-image-container {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+html.my-app-dark .product-image-container {
+  background: rgba(30, 41, 59, 0.5);
+  border-color: rgba(148, 163, 184, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+.product-image-circular {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.product-image-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(30, 64, 175, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image-placeholder i {
+  font-size: 4rem;
+  color: var(--color-primary);
+  opacity: 0.8;
+}
+
+html.my-app-dark .product-image-placeholder {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+html.my-app-dark .product-image-placeholder i {
+  color: #60a5fa;
+}

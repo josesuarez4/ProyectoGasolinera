@@ -1,0 +1,707 @@
+/* ── Existing styles (unchanged) ────────────────────────────────────────── */
+
+:host {
+  display: block;
+}
+
+.staff-dashboard {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.dashboard-header p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.metric-label {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.metric-value {
+  margin-top: 0.4rem;
+  display: block;
+  font-size: 1.35rem;
+  color: #0f172a;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.period-label {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.period-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.period-btn {
+  padding: 0.4rem 0.8rem;
+  border: 2px solid #cbd5e1;
+  background: white;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.period-btn:hover:not(:disabled) {
+  border-color: #0f172a;
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.period-btn.active {
+  background: #0f172a;
+  color: white;
+  border-color: #0f172a;
+}
+
+.period-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+@media (max-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summary-card h3,
+.chart-card-title,
+.top-clients-card h3 {
+  margin: 0 0 1rem;
+}
+
+.chart-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.chart-card-controls {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.chart-card-control {
+  padding: 0.42rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #64748b;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chart-card-control:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.chart-card-control.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.chart-card-insights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.chart-card-insight {
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid rgba(99, 102, 241, 0.08);
+}
+
+.chart-card-insight__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.chart-card-insight__value {
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.chart-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.chart-card-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.summary-label {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.top-clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.top-clients-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.top-clients-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.top-clients-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.rank {
+  color: #94a3b8;
+  font-weight: 700;
+  width: 2rem;
+}
+
+.email {
+  color: #64748b;
+}
+
+.spent {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.loading-text,
+.empty-text {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── Product evolution — NEW ─────────────────────────────────────────────── */
+
+/* Card header row: title/subtitle on the left, toggle button on the right */
+.product-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0;
+}
+
+.product-chart-title {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.product-chart-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Controls row: period selector + search side by side */
+.product-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 1rem;
+}
+
+/* Slightly more compact period selector inside the product card */
+.product-period-selector {
+  padding: 0.5rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.product-category-selector {
+  flex: 0 0 200px;
+  min-width: 150px;
+}
+
+.category-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-select:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+}
+
+:host-context(html.my-app-dark) .category-select {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+.product-date-filters {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.date-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.date-input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.date-input:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+}
+
+:host-context(html.my-app-dark) .date-input {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .date-label {
+  color: #94a3b8;
+}
+
+/* Search field */
+.product-search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.product-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.product-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.product-search-input {
+  width: 100%;
+  padding: 0.45rem 2.2rem 0.45rem 2.2rem;
+  /* space for icon on left and clear btn on right */
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #ffffff;
+  color: #0f172a;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.product-search-input:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+}
+
+.product-search-input::placeholder {
+  color: #94a3b8;
+}
+
+/* × clear button inside the search input */
+.product-search-clear {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 0.2rem;
+  line-height: 1;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+
+.product-search-clear:hover {
+  color: #0f172a;
+}
+
+.search-apply-button {
+  margin-left: 0.5rem;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 38px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-apply-button:hover {
+  background: #4f46e5;
+}
+
+:host-context(html.my-app-dark) .search-apply-button {
+  background: #4f46e5;
+}
+
+:host-context(html.my-app-dark) .search-apply-button:hover {
+  background: #6366f1;
+}
+
+.product-search-hint {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  padding-left: 0.25rem;
+}
+
+/* ── Dark mode — existing ────────────────────────────────────────────────── */
+:host-context(html.my-app-dark) ::ng-deep .p-card {
+  background: rgba(15, 23, 42, 0.76);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+:host-context(html.my-app-dark) .summary-item {
+  background: #1e293b;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+:host-context(html.my-app-dark) .summary-label {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .summary-value,
+:host-context(html.my-app-dark) .metric-value,
+:host-context(html.my-app-dark) .spent {
+  color: #f8fafc;
+}
+
+:host-context(html.my-app-dark) h2,
+:host-context(html.my-app-dark) h3 {
+  color: #ffffff;
+}
+
+:host-context(html.my-app-dark) .dashboard-header p {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .chart-card-title {
+  color: #f8fafc;
+}
+
+:host-context(html.my-app-dark) .chart-card-subtitle {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .chart-card-control {
+  background: #0f172a;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .chart-card-control:hover {
+  border-color: #94a3b8;
+  color: #f8fafc;
+  background: #1e293b;
+}
+
+:host-context(html.my-app-dark) .chart-card-control.active {
+  background: #60a5fa;
+  border-color: #60a5fa;
+  color: #0f172a;
+}
+
+:host-context(html.my-app-dark) .chart-card-insight {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) .chart-card-insight__label {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .chart-card-insight__value {
+  color: #f8fafc;
+}
+
+:host-context(html.my-app-dark) .product-chart-title {
+  color: #f8fafc;
+}
+
+:host-context(html.my-app-dark) .product-chart-subtitle {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .product-search-input {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .product-search-input:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.25);
+}
+
+:host-context(html.my-app-dark) .product-search-input::placeholder {
+  color: #475569;
+}
+
+:host-context(html.my-app-dark) .product-search-clear {
+  color: #475569;
+}
+
+:host-context(html.my-app-dark) .product-search-clear:hover {
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .top-clients-table th {
+  border-bottom-color: #334155;
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .top-clients-table td {
+  border-bottom-color: rgba(148, 163, 184, 0.05);
+  color: #cbd5e1;
+}
+
+:host-context(html.my-app-dark) .email {
+  color: #64748b;
+}
+
+:host-context(html.my-app-dark) .rank {
+  color: #475569;
+}
+
+:host-context(html.my-app-dark) .period-selector {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+:host-context(html.my-app-dark) .period-label {
+  color: #f8fafc;
+}
+
+:host-context(html.my-app-dark) .period-btn {
+  background: #0f172a;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .period-btn:hover:not(:disabled) {
+  border-color: #94a3b8;
+  color: #f8fafc;
+  background: #1e293b;
+}
+
+:host-context(html.my-app-dark) .period-btn.active {
+  background: #60a5fa;
+  color: #0f172a;
+  border-color: #60a5fa;
+}
+
+/* ── Main Charts Grid (2 columns) ── */
+.main-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .main-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Distribution Grid ── */
+.distribution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.distribution-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 340px;
+  max-height: 380px;
+}
+
+@media (max-width: 1100px) {
+  .distribution-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .distribution-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.metric-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6366f1;
+  font-size: 1.25rem;
+}
+
+:host-context(html.my-app-dark) .metric-icon-wrapper {
+  background: rgba(99, 102, 241, 0.1);
+  color: #818cf8;
+}

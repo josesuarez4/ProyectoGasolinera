@@ -1,0 +1,57 @@
+.supplier-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.supplier-orders-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.supplier-orders-header p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+.supplier-orders-header p-button ::ng-deep .p-button {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1.25rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.supplier-orders-header p-button ::ng-deep .p-button:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.orders-error {
+  margin: 0;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.supplier-success {
+  margin: 0;
+  color: #166534;
+  font-weight: 600;
+}
+
+:host-context(html.my-app-dark) {
+  .supplier-orders-header h3 {
+    color: #f8fafc;
+  }
+
+  .supplier-orders-header p {
+    color: #94a3b8;
+  }
+}

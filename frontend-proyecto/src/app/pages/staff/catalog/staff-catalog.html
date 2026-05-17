@@ -1,0 +1,239 @@
+<section class="staff-catalog" aria-label="Staff catalog overview">
+  <header class="catalog-header">
+    <h2>Catalog</h2>
+    <p>Revenue comparison and product management</p>
+  </header>
+
+  <!-- Product management -->
+  @if (statusMessage()) {
+  <div class="p-message p-message-success mb-4" role="status">
+    <span class="p-message-icon pi pi-check-circle"></span>
+    <span class="p-message-detail">{{ statusMessage() }}</span>
+  </div>
+  }
+
+  @if (errorMessage()) {
+  <div class="p-message p-message-error mb-4" role="alert">
+    <span class="p-message-icon pi pi-times-circle"></span>
+    <span class="p-message-detail">{{ errorMessage() }}</span>
+  </div>
+  }
+
+  <div class="orders-filters" aria-label="Catalog filters">
+    <label class="filter-field" for="catalog-search-input">
+      <span>Product search</span>
+      <input id="catalog-search-input" type="text" class="filter-input" [value]="productNameFilter()"
+        placeholder="Search by name or supplier..."
+        (input)="onCatalogSearchChange($any($event.target).value)" />
+    </label>
+
+    <label class="filter-field" for="product-category-filter">
+      <span>Category</span>
+      <select id="product-category-filter" class="filter-input"
+        [value]="selectedCategoryId() === null ? '' : selectedCategoryId()"
+        (change)="onCategoryFilterChange($any($event.target).value)">
+        @for (option of categoryOptions(); track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="filter-field" for="catalog-sort-by-select">
+      <span>Sort by</span>
+      <select id="catalog-sort-by-select" class="filter-input" [value]="sortBy()"
+        (change)="onSortByChange($any($event.target).value)">
+        @for (option of sortOptions; track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="filter-field">
+      <span>Order</span>
+      <button type="button" class="filter-input sort-toggle-button" (click)="toggleSortOrder()">
+        <i class="pi" [class.pi-sort-amount-down]="sortOrder() === 'desc'" [class.pi-sort-amount-up]="sortOrder() === 'asc'"></i>
+        @if (sortOrder() === 'desc') {
+        Descending
+        } @else {
+        Ascending
+        }
+      </button>
+    </div>
+
+    <label class="filter-field" for="product-status-filter">
+      <span>Status</span>
+      <select id="product-status-filter" class="filter-input" [value]="productStatusFilter()"
+        (change)="onStatusFilterChange($any($event.target).value)">
+        @for (option of statusOptions; track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </label>
+
+    <button type="button" class="clear-filters-button" [disabled]="!hasActiveFilters()" (click)="clearFilters()">
+      Clear filters
+    </button>
+  </div>
+
+  <app-table
+    entityLabel="Products"
+    title="Product Management"
+    description="Edit and delete products. To add new products, create a supplier order from the Orders section."
+    emptyMessage="No products match the current filters."
+    [loading]="loadingProducts()"
+    [rowClickable]="true"
+    (rowClicked)="handleRowClick($event)"
+    [rows]="filteredProductRows()"
+    [columns]="productColumns" [actions]="productActions()" [actionColumnPosition]="'start'"
+    (actionTriggered)="handleProductAction($event)">
+  </app-table>
+
+  <p-dialog [visible]="productDetails() !== null" (visibleChange)="productDetails.set(null)" [modal]="true"
+    [style]="{ width: '900px' }" [breakpoints]="{ '960px': '90vw', '640px': '100vw' }" [draggable]="false"
+    [resizable]="false" [showHeader]="false" styleClass="detail-dialog-custom">
+
+    @if (productDetails(); as product) {
+    <app-detail-view [title]="product.name" [subtitle]="'Product Details'"
+      [status]="product.active ? 'Active' : 'Inactive'" [statusSeverity]="product.active ? 'success' : 'danger'"
+      (back)="productDetails.set(null)">
+
+
+      <div sidebar>
+        <div class="flex flex-column align-items-center mb-4">
+          <div class="product-image-container mb-3">
+            @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.name" class="product-image-circular" />
+            } @else {
+            <div class="product-image-placeholder">
+              <i class="pi pi-box"></i>
+            </div>
+            }
+          </div>
+          <h2 class="text-2xl font-800 m-0 text-center">{{ product.name }}</h2>
+          <span class="text-secondary text-sm mt-1">Catalog Item</span>
+        </div>
+
+        <div class="info-list mt-4">
+          <div class="info-item">
+            <i class="pi pi-id-card"></i>
+            <div class="info-item-content">
+              <span class="info-item-label">Product ID</span>
+              <span class="info-item-value">#{{ product.id }}</span>
+            </div>
+          </div>
+
+          <div class="info-separator"></div>
+
+          <div class="info-item">
+            <i class="pi pi-database"></i>
+            <div class="info-item-content">
+              <span class="info-item-label">Current Stock</span>
+              <span class="info-item-value" [class.text-danger]="product.currentStock < 10">
+                {{ product.currentStock }} units
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div main>
+        <div class="detail-data-grid">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="width: 48px; height: 48px; background: rgba(30, 64, 175, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              <i class="pi pi-info-circle" style="font-size: 1.5rem; color: var(--color-primary);"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 900; margin: 0;">Commercial Information</h3>
+          </div>
+
+          <div class="detail-data-row">
+            <div class="detail-data-item">
+              <span class="detail-data-label">Sale Price</span>
+              <span class="text-4xl gradient-text m-0">{{ product.salePrice | currency:'EUR' }}</span>
+            </div>
+            <div class="detail-data-item">
+              <span class="detail-data-label">Category</span>
+              <span class="detail-data-value">{{ product.categoryName }}</span>
+            </div>
+          </div>
+
+          <div class="detail-description-box">
+            <span class="detail-data-label block mb-3">Product Description</span>
+            <p class="detail-description-text m-0">
+              {{ product.description || 'No detailed description available for this catalog item.' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </app-detail-view>
+    }
+  </p-dialog>
+
+  <app-generic-form [(visible)]="showDialog" [title]="productToEdit() ? 'Edit Product' : 'New Product'"
+    [saveLabel]="productToEdit() ? 'Update' : 'Save'" [config]="productFormConfig()" [initialData]="productToEdit()"
+    (onSave)="onSaveProduct($event)" (visibleChange)="!$event ? productToEdit.set(null) : null">
+  </app-generic-form>
+  <p-dialog header="Sales Estimation" [(visible)]="showEstimationDialog" [modal]="true" [style]="{ width: '450px' }"
+    [draggable]="false" [resizable]="false">
+    @if (loadingEstimation()) {
+    <div class="flex justify-content-center align-items-center p-5">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <span class="ml-3">Calculating projection...</span>
+    </div>
+    } @else if (estimationData()) {
+    <div class="estimation-container">
+      <div class="estimation-card">
+        <span class="label">Projected Sales (Next Month)</span>
+        <div class="value">
+          {{ estimationData().estimatedNextMonth }}<span class="unit">units</span>
+        </div>
+      </div>
+
+      <div class="estimation-stats">
+        <div class="stat-item">
+          <span class="stat-label">Trend</span>
+          <p-tag
+            [value]="estimationData().trend === 'rising' ? 'Rising' : estimationData().trend === 'falling' ? 'Falling' : 'Stable'"
+            [severity]="estimationData().trend === 'rising' ? 'success' : estimationData().trend === 'falling' ? 'danger' : 'info'"
+            [icon]="estimationData().trend === 'rising' ? 'pi pi-arrow-up' : estimationData().trend === 'falling' ? 'pi pi-arrow-down' : 'pi pi-minus'"
+            [rounded]="true"></p-tag>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Growth Rate</span>
+          <div class="stat-value"
+            [style.color]="estimationData().growthRate > 0 ? '#10b981' : estimationData().growthRate < 0 ? '#ef4444' : 'inherit'">
+            {{ estimationData().growthRate > 0 ? '+' : '' }}{{ estimationData().growthRate }}%
+          </div>
+        </div>
+      </div>
+
+      <div class="confidence-section">
+        <div class="confidence-info">
+          <span class="stat-label">Confidence Level</span>
+          <span class="confidence-text"
+            [style.color]="estimationData().confidence === 'high' ? '#10b981' : estimationData().confidence === 'medium' ? '#f59e0b' : '#ef4444'">
+            {{ estimationData().confidence }}
+          </span>
+        </div>
+        <div class="confidence-bar-container">
+          <div class="confidence-bar"
+            [style.background]="estimationData().confidence === 'high' ? '#10b981' : estimationData().confidence === 'medium' ? '#f59e0b' : '#ef4444'"
+            [style.width]="estimationData().confidence === 'high' ? '100%' : estimationData().confidence === 'medium' ? '60%' : '30%'">
+          </div>
+        </div>
+      </div>
+
+      <p class="estimation-footer-note">
+        * This estimation is based on the last {{ estimationData().historicalData.length }} periods of historical data
+        points.
+      </p>
+    </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <p-button label="Close" icon="pi pi-times" (click)="showEstimationDialog.set(false)" [text]="true"
+        severity="secondary"></p-button>
+    </ng-template>
+  </p-dialog>
+  <p-confirmDialog />
+</section>

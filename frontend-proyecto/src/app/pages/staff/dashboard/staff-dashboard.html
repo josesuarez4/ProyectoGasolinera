@@ -1,0 +1,216 @@
+@if (panel(); as currentPanel) {
+<div class="staff-dashboard">
+  <header class="dashboard-header">
+    <div>
+      <h2>{{ currentPanel.title }}</h2>
+      <p>{{ currentPanel.subtitle }}</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <p-tag [value]="currentPanel.badge" [severity]="currentPanel.severity"></p-tag>
+    </div>
+  </header>
+
+  <!-- ── Top Metrics Grid ────────────────────────────────────────────────── -->
+  <div class="metrics-grid" style="margin-top: 1rem;">
+    @for (metric of currentPanel.metrics; track metric.label) {
+    <app-card class="metric-card">
+      <div class="metric-content">
+        <div class="metric-info">
+          <span class="metric-label">{{ metric.label }}</span>
+          <strong class="metric-value">{{ metric.value }}</strong>
+        </div>
+        @if (metric.icon) {
+        <div class="metric-icon-wrapper">
+          <i class="pi" [class]="metric.icon"></i>
+        </div>
+        }
+      </div>
+    </app-card>
+    }
+  </div>
+
+  <!-- ── Product Evolution Section ── -->
+  <app-card class="product-evolution-card" style="margin-top: 1.5rem;">
+      <div class="product-chart-header">
+        <div>
+          <h3 class="product-chart-title">Product Sales Evolution</h3>
+          <p class="product-chart-subtitle">Historical units sold</p>
+        </div>
+      </div>
+
+      <div class="product-controls">
+        <div class="product-period-selector period-selector">
+          @for (p of ['day', 'week', 'month', 'year']; track p) {
+            <button class="period-btn" [class.active]="productChartPeriod() === p" (click)="setProductPeriod($any(p))">
+              {{ p | titlecase }}
+            </button>
+          }
+        </div>
+
+        <!-- Category Filter -->
+        <div class="product-category-selector">
+          <select class="category-select" [ngModel]="productChartCategory()" (ngModelChange)="setProductCategory($event)">
+            <option value="">Todas las Categorías</option>
+            @for (cat of categories(); track cat.id) {
+              <option [value]="cat.name">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Date Range Filters -->
+        <div class="product-date-filters">
+          <div class="date-input-wrapper">
+            <label for="start-date" class="date-label">From</label>
+            <input type="date" id="start-date" class="date-input" 
+                   [ngModel]="productChartStartDate()" (ngModelChange)="setProductStartDate($event)">
+          </div>
+          <div class="date-input-wrapper">
+            <label for="end-date" class="date-label">To</label>
+            <input type="date" id="end-date" class="date-input" 
+                   [ngModel]="productChartEndDate()" (ngModelChange)="setProductEndDate($event)">
+          </div>
+        </div>
+
+        <div class="product-search-field">
+          <div class="product-search-wrapper">
+            <i class="pi pi-search product-search-icon"></i>
+            <input type="text" class="product-search-input" placeholder="Search product..." 
+                   [ngModel]="productSearchInput()" (ngModelChange)="onProductSearchChange($event)"
+                   (keyup.enter)="onSearchEnter()">
+            @if (productSearchInput()) {
+              <button class="product-search-clear" (click)="clearProductSearch()">×</button>
+            }
+            <button class="search-apply-button" (click)="onSearchEnter()" pTooltip="Apply filters">
+              <i class="pi pi-filter"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 350px; position: relative; overflow: hidden;">
+        <app-chart type="line" height="350px" [data]="productChartData()" [options]="defaultOptions"
+          [loading]="loadingProductChart()" emptyMessage="No data for this search">
+        </app-chart>
+      </div>
+    </app-card>
+
+  @if (currentRole() === 'ADMIN') {
+
+    <!-- ── Main Financial Charts (2 columns) ── -->
+    <div class="main-charts-grid" style="margin-top: 1.5rem;">
+      <!-- Bar Chart: Financials -->
+      <app-card class="distribution-card">
+        <div class="chart-card-header">
+          <h3 class="chart-card-title">Financials (Income vs Expenses)</h3>
+          <fieldset class="chart-card-controls">
+            @for (p of availablePeriods; track p) {
+              <button class="chart-card-control" [class.active]="selectedPeriod() === p" (click)="setPeriod($any(p))" type="button">
+                {{ p | titlecase }}
+              </button>
+            }
+          </fieldset>
+        </div>
+        <app-chart type="bar" title="" height="320px" [data]="financialChartData()"
+          [loading]="loadingFinancial()" emptyMessage="No financial data">
+        </app-chart>
+      </app-card>
+
+      <!-- Radar Chart: Category Revenue -->
+      <app-card class="distribution-card">
+        <div class="chart-card-header">
+          <h3 class="chart-card-title">Sales by Category</h3>
+          <fieldset class="chart-card-controls">
+            <button class="chart-card-control" [class.active]="categoryRadarMetric() === 'revenue'" (click)="setCategoryRadarMetric('revenue')" type="button">Revenue</button>
+            <button class="chart-card-control" [class.active]="categoryRadarMetric() === 'orders'" (click)="setCategoryRadarMetric('orders')" type="button">Orders</button>
+          </fieldset>
+        </div>
+        <app-chart type="radar" title="" height="300px" [data]="categoryRadarChartData()" [options]="categoryRadarOptions"
+          [loading]="loadingCategoryRevenue()" emptyMessage="Loading categories...">
+        </app-chart>
+      </app-card>
+    </div>
+
+    <!-- ── 6 Operational Charts (3 columns) ── -->
+    <div class="distribution-grid" style="margin-top: 1.5rem;">
+      <app-card class="distribution-card">
+        <app-chart type="pie" title="Order Status" height="280px" [data]="orderStatusData()" [options]="defaultOptions"
+          [loading]="loadingExtraCharts()" emptyMessage="No orders found">
+        </app-chart>
+      </app-card>
+
+      <app-card class="distribution-card">
+        <app-chart type="polarArea" title="Top Products (Revenue)" height="280px" [data]="topProductsData()" [options]="polarAreaOptions"
+          [loading]="loadingExtraCharts()" emptyMessage="No products found">
+        </app-chart>
+      </app-card>
+
+      <app-card class="distribution-card">
+        <app-chart type="pie" title="Online vs Store" height="280px" [data]="originSalesData()" [options]="defaultOptions"
+          [loading]="loadingExtraCharts()" emptyMessage="No origin data found">
+        </app-chart>
+      </app-card>
+
+      <app-card class="distribution-card">
+        <app-chart type="bar" title="Stock Levels" height="280px" [data]="stockData()" [loading]="loadingExtraCharts()"
+          [options]="{ indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }"
+          emptyMessage="No stock found">
+        </app-chart>
+      </app-card>
+
+      <app-card class="distribution-card">
+        <app-chart type="bar" title="Top Employees" height="280px" [data]="topEmployeesData()" [loading]="loadingExtraCharts()"
+          [options]="barOptions" emptyMessage="No employees found">
+        </app-chart>
+      </app-card>
+
+      <app-card class="distribution-card">
+        <app-chart type="bar" title="Hourly Volume" height="280px" [data]="hourlySalesData()" [loading]="loadingExtraCharts()"
+          [options]="barOptions" emptyMessage="No hourly data found">
+        </app-chart>
+      </app-card>
+    </div>
+  }
+
+  <!-- ── Bottom Grid (Summary & Top Clients) ── -->
+  <div class="summary-tables-grid" style="margin-top: 1.5rem;">
+    @if (currentRole() === 'ADMIN') {
+      <app-card class="summary-card">
+        <h3>User Summary</h3>
+        @if (loadingSummary()) { <p class="loading-text">Loading...</p> }
+        @else if (userSummary()) {
+          <div class="summary-grid">
+            <div class="summary-item"><span class="summary-label">Total Users</span><strong class="summary-value">{{ userSummary()!.totalUsers }}</strong></div>
+            <div class="summary-item"><span class="summary-label">Managers</span><strong class="summary-value">{{ userSummary()!.totalManagers }}</strong></div>
+            <div class="summary-item"><span class="summary-label">Employees</span><strong class="summary-value">{{ userSummary()!.totalEmployees }}</strong></div>
+            <div class="summary-item"><span class="summary-label">Clients</span><strong class="summary-value">{{ userSummary()!.totalClients }}</strong></div>
+          </div>
+        }
+      </app-card>
+
+      <app-card class="top-clients-card">
+        <h3>Top Customers (Monthly Spend)</h3>
+        @if (loadingTopClients()) { <p class="loading-text">Loading...</p> }
+        @else if (topClients().length > 0) {
+          <table class="top-clients-table">
+            <thead><tr><th>#</th><th>Customer</th><th>Spend</th></tr></thead>
+            <tbody>
+              @for (client of topClients(); track client.email; let i = $index) {
+                <tr>
+                  <td class="rank">{{ i + 1 }}</td>
+                  <td><div class="client-name">{{ client.name }}</div><div class="email">{{ client.email }}</div></td>
+                  <td class="spent align-right">{{ client.totalSpent.toFixed(2) }} €</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else { <p class="empty-text">No customers this month.</p> }
+      </app-card>
+    }
+  </div>
+</div>
+} @else {
+  <app-card>
+    <h3>Session not found</h3>
+    <p>Please, log in again.</p>
+  </app-card>
+}

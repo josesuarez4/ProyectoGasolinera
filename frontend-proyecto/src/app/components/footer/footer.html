@@ -1,0 +1,84 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="footer-logo" routerLink="/" aria-label="Ir al inicio">
+        <img src="/img/logo.png" alt="Gas Station Logo" class="logo-icon-img" />
+        <span class="logo-text">{{ brandText() }}</span>
+      </a>
+    </div>
+
+    <ul class="footer-links">
+      <li>
+        <a routerLink="/fuel-price" routerLinkActive="footer-link-active">
+          <i class="pi pi-bolt"></i>
+          <span>Fuel prices</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/catalog" routerLinkActive="footer-link-active">
+          <i class="pi pi-shopping-bag"></i>
+          <span>Catalog</span>
+        </a>
+      </li>
+      <li>
+        <a href="tel:+34666666666">
+          <i class="pi pi-phone"></i>
+          <span>+34 666 666 666</span>
+        </a>
+      </li>
+      <li>
+        <a href="mailto:support@plenergy.es">
+          <i class="pi pi-envelope"></i>
+          <span>support@plenergy.es</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.google.com/maps/place/Plenergy+Adeje+I/@28.1268338,-16.7381352,21z/data=!4m6!3m5!1s0xc6a913411710435:0x45dd5bfab00789da!8m2!3d28.1268824!4d-16.73805!16s%2Fg%2F11y38wlh_x?entry=ttu&g_ep=EgoyMDI2MDQyMC4wIKXMDSoASAFQAw%3D%3D"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="pi pi-map-marker"></i>
+          <span>Plenergy Adeje</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="footer-actions">
+      <a
+        href="https://www.instagram.com/plenergy/"
+        target="_blank"
+        rel="noopener"
+        aria-label="Instagram"
+      >
+        <p-button
+          icon="pi pi-instagram"
+          [rounded]="true"
+          [text]="true"
+          severity="secondary"
+          styleClass="btn"
+          aria-label="Instagram"
+        />
+      </a>
+      <a
+        href="https://www.facebook.com/plenergy.spain/"
+        target="_blank"
+        rel="noopener"
+        aria-label="Facebook"
+      >
+        <p-button
+          icon="pi pi-facebook"
+          [rounded]="true"
+          [text]="true"
+          severity="secondary"
+          styleClass="btn"
+          aria-label="Facebook"
+        />
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Gas Station — All rights reserved.</span>
+  </div>
+</footer>

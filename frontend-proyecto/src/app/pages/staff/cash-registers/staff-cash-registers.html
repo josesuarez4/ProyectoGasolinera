@@ -1,0 +1,309 @@
+<section class="staff-cash-registers-page" aria-label="Cash register management">
+  <!-- ── Page header ── -->
+  <header class="page-header">
+    <div>
+      <h1>Cash Register</h1>
+      <p>Manage daily openings, closings and balances</p>
+    </div>
+    <div>
+      <p-button
+        [label]="showAnalysis() ? 'Hide Analysis' : 'Cash Register Analysis'"
+        [icon]="showAnalysis() ? 'pi pi-chart-line' : 'pi pi-chart-bar'"
+        [severity]="showAnalysis() ? 'secondary' : 'primary'"
+        (onClick)="toggleAnalysis()"
+      ></p-button>
+    </div>
+  </header>
+
+  <!-- ── Status messages ── -->
+  @if (statusMessage()) {
+    <div class="status-message" role="alert">
+      <i class="pi pi-info-circle"></i>
+      <span>{{ statusMessage() }}</span>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-message" role="alert">
+      <i class="pi pi-times-circle"></i>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- ── Analysis dashboard ── -->
+  @if (showAnalysis()) {
+    <section class="analysis-section" aria-label="Cash register analysis">
+      <div>
+        <h2>Performance Analysis</h2>
+        <p>Aggregate statistics for the selected filters.</p>
+      </div>
+
+      @if (analysisStats(); as stats) {
+        <div class="stats-grid-analysis">
+          <div class="stat-card-analysis">
+            <span class="stat-label-analysis">Total Sales</span>
+            <span class="stat-value-analysis">{{ formatCurrency(stats.totalSales) }}</span>
+            <div class="stat-sub-analysis">
+              <span>Cash: {{ formatCurrency(stats.totalCash) }}</span>
+              <span>Card: {{ formatCurrency(stats.totalCard) }}</span>
+            </div>
+          </div>
+
+          <div class="stat-card-analysis" [class.warning]="stats.discrepancyCount > 0">
+            <span class="stat-label-analysis">Total Discrepancy</span>
+            <span class="stat-value-analysis" style="color: #ef4444">{{
+              formatCurrency(stats.totalDiscrepancySum)
+            }}</span>
+            <span class="stat-desc-analysis"
+              >{{ stats.discrepancyCount }} registers with errors</span
+            >
+          </div>
+
+          <div class="stat-card-analysis">
+            <span class="stat-label-analysis">Accuracy Rate</span>
+            <span
+              class="stat-value-analysis"
+              [style.color]="
+                stats.accuracyRate > 95
+                  ? '#22c55e'
+                  : stats.accuracyRate > 80
+                    ? '#f59e0b'
+                    : '#ef4444'
+              "
+            >
+              {{ stats.accuracyRate | number: '1.1-1' }}%
+            </span>
+            <span class="stat-desc-analysis">Out of {{ stats.totalRegisters }} registers</span>
+          </div>
+        </div>
+
+        <div class="analysis-charts-grid">
+          <div class="analysis-chart-wrap">
+            <h4>Discrepancy Trend (Last 10)</h4>
+            <div style="height: 300px">
+              <app-chart type="line" [data]="stats.chartData"></app-chart>
+            </div>
+          </div>
+
+          <div class="analysis-chart-wrap">
+            <h4>Payment Method History (Last 10)</h4>
+            <div style="height: 300px">
+              <app-chart type="line" [data]="stats.paymentMethodChartData"></app-chart>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-analysis">
+          <i class="pi pi-info-circle" style="font-size: 2rem"></i>
+          <p>No data available for the current filters to perform analysis.</p>
+        </div>
+      }
+    </section>
+  }
+
+  <!-- ── Active register / Empty state ── -->
+  @if (loading()) {
+    <div style="display: flex; justify-content: center; padding: 4rem">
+      <i class="pi pi-spin pi-spinner" style="font-size: 3rem; color: var(--color-primary)"></i>
+    </div>
+  } @else {
+    @if (activeRegister(); as register) {
+      <div class="cash-summary-grid">
+        <!-- Status card -->
+        <div class="cash-card">
+          <div class="card-header">
+            <span class="metric-label">Session Status</span>
+          </div>
+          <div
+            [class]="'status-indicator ' + (register.closedAt ? 'status-closed' : 'status-open')"
+          >
+            <span class="status-dot"></span>
+            {{ register.closedAt ? 'CLOSED' : 'OPEN' }}
+          </div>
+          <div class="session-date">
+            <i class="pi pi-calendar"></i>
+            <span>{{ register.openedAt | date: 'short' }}</span>
+          </div>
+          <div class="register-actions">
+            @if (register.closedAt === null) {
+              <p-button
+                label="View session tickets"
+                icon="pi pi-list"
+                severity="secondary"
+                styleClass="w-full"
+                (onClick)="openCashRegisterTickets({ id: register.id })"
+              ></p-button>
+              <p-button
+                label="Close register"
+                icon="pi pi-lock"
+                severity="danger"
+                styleClass="w-full"
+                (onClick)="onCloseRegister()"
+              ></p-button>
+            }
+          </div>
+        </div>
+
+        <!-- Opening cash -->
+        <div class="cash-card">
+          <div class="card-header">
+            <span class="metric-label">Opening Cash</span>
+            <i class="pi pi-sign-in" style="color: var(--color-primary); font-size: 1.1rem"></i>
+          </div>
+          <span class="metric-value">{{ register.openingCash | currency: 'EUR' }}</span>
+          <span class="metric-sub">Starting amount for shift</span>
+        </div>
+
+        <!-- Closing cash -->
+        <div class="cash-card">
+          <div class="card-header">
+            <span class="metric-label">Closing Cash</span>
+            <i class="pi pi-sign-out" style="color: #8b5cf6; font-size: 1.1rem"></i>
+          </div>
+          <span class="metric-value">
+            @if (register.closingCash === null) {
+              <span style="color: #94a3b8; font-weight: 400; font-size: 1.1rem">Pending</span>
+            } @else {
+              {{ register.closingCash | currency: 'EUR' }}
+            }
+          </span>
+          <span class="metric-sub">Final amount for shift</span>
+        </div>
+
+        <!-- Totals -->
+        <div class="cash-card">
+          <div class="card-header">
+            <span class="metric-label">Totals</span>
+            <i class="pi pi-chart-line" style="color: #10b981; font-size: 1.1rem"></i>
+          </div>
+          <div class="summary-stats">
+            <div class="summary-stat">
+              <span class="summary-stat-label">Cash</span>
+              <span class="summary-stat-value">{{ register.cashAmount | currency: 'EUR' }}</span>
+            </div>
+            <div class="summary-stat">
+              <span class="summary-stat-label">Card</span>
+              <span class="summary-stat-value">{{ register.cardAmount | currency: 'EUR' }}</span>
+            </div>
+          </div>
+          <span class="metric-sub">Accumulated payment totals</span>
+        </div>
+      </div>
+    } @else {
+      <div class="empty-state-container">
+        <div class="icon-wrapper">
+          <i class="pi pi-wallet"></i>
+        </div>
+        <h2>New Day, New Shift</h2>
+        <p>
+          No cash register is currently active. Please perform an opening count to start processing
+          transactions and tracking sales.
+        </p>
+        <p-button
+          label="Open cash register"
+          icon="pi pi-plus"
+          size="large"
+          severity="primary"
+          [raised]="true"
+          (onClick)="onOpenRegister()"
+        ></p-button>
+      </div>
+    }
+  }
+
+  <!-- ── History section ── -->
+  <div class="history-section">
+    <div class="history-header">
+      <div>
+        <h2>Past Cash Registers</h2>
+        <p>Closed shifts and their recorded totals</p>
+      </div>
+    </div>
+
+    <div class="history-filters" aria-label="Cash register filters">
+      <label class="filter-field" for="cash-register-manager-filter">
+        <span>Manager</span>
+        <input
+          id="cash-register-manager-filter"
+          type="text"
+          class="filter-input"
+          [value]="managerFilter()"
+          placeholder="Search by name or ID"
+          (input)="onManagerFilterChange($any($event.target).value)"
+        />
+      </label>
+
+      <label class="filter-field" for="cash-register-start-date-filter">
+        <span>Start date</span>
+        <input
+          id="cash-register-start-date-filter"
+          type="date"
+          class="filter-input"
+          [value]="startDateFilter()"
+          (change)="onStartDateFilterChange($any($event.target).value)"
+        />
+      </label>
+
+      <label class="filter-field" for="cash-register-end-date-filter">
+        <span>End date</span>
+        <input
+          id="cash-register-end-date-filter"
+          type="date"
+          class="filter-input"
+          [value]="endDateFilter()"
+          (change)="onEndDateFilterChange($any($event.target).value)"
+        />
+      </label>
+
+      <button
+        type="button"
+        class="clear-filters-button"
+        [disabled]="!hasActiveFilters()"
+        (click)="clearFilters()"
+      >
+        Clear filters
+      </button>
+    </div>
+
+    <app-table
+      entityLabel="Cash registers"
+      title="Cash Register History"
+      description="Historical closed registers visible to managers and admins."
+      emptyMessage="No cash registers match the current filters."
+      [loading]="loading()"
+      [rows]="filteredPastRegisters()"
+      [columns]="pastRegisterColumns"
+      [paginator]="true"
+      [rowsPerPage]="10"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} cash registers"
+      [rowClickable]="true"
+      (rowClicked)="openCashRegisterTickets($event.row)"
+      [actionColumnPosition]="'end'"
+      [rowClass]="checkDescuadre"
+    ></app-table>
+  </div>
+
+  <!-- ── Generic form dialog ── -->
+  <app-generic-form
+    [(visible)]="showDialog"
+    [title]="
+      dialogMode() === 'OPEN'
+        ? 'Open new register'
+        : dialogMode() === 'CLOSE'
+          ? 'Finalize cash closing'
+          : 'Edit register data'
+    "
+    [saveLabel]="
+      dialogMode() === 'OPEN'
+        ? 'Confirm opening'
+        : dialogMode() === 'CLOSE'
+          ? 'Confirm closing'
+          : 'Update record'
+    "
+    [config]="formConfig()"
+    [initialData]="formInitialData()"
+    (onSave)="onSave($event)"
+  ></app-generic-form>
+</section>

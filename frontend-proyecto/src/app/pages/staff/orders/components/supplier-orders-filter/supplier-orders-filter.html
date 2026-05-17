@@ -1,0 +1,74 @@
+<div class="orders-filters supplier-filters" aria-label="Supplier order filters">
+  <label class="filter-field" for="supplier-name-filter">
+    <span>Supplier / Order ID</span>
+    <input
+      id="supplier-name-filter"
+      type="text"
+      class="filter-input"
+      [ngModel]="nameFilter()"
+      (ngModelChange)="nameFilterChange.emit($event)"
+      placeholder="Supplier name or ID"
+    />
+  </label>
+
+  <label class="filter-field" for="supplier-creator-filter">
+    <span>Creator</span>
+    <input
+      id="supplier-creator-filter"
+      type="text"
+      class="filter-input"
+      [ngModel]="creatorFilter()"
+      (ngModelChange)="creatorFilterChange.emit($event)"
+      placeholder="Creator name"
+    />
+  </label>
+
+  <label class="filter-field" for="supplier-date-filter">
+    <span>Date</span>
+    <input
+      id="supplier-date-filter"
+      type="date"
+      class="filter-input"
+      [ngModel]="dateFilter()"
+      (ngModelChange)="dateFilterChange.emit($event)"
+    />
+  </label>
+
+  <div class="filter-field">
+    <span>Sort by date</span>
+    <button
+      type="button"
+      class="filter-input sort-toggle-button"
+      (click)="toggleDateSort.emit()"
+    >
+      @if (dateSortOrder() === 'desc') {
+        <i class="pi pi-sort-amount-down"></i> Newest first
+      } @else {
+        <i class="pi pi-sort-amount-up"></i> Oldest first
+      }
+    </button>
+  </div>
+
+  <label class="filter-field" for="supplier-status-filter">
+    <span>Status</span>
+    <select
+      id="supplier-status-filter"
+      class="filter-input"
+      [ngModel]="statusFilter()"
+      (ngModelChange)="statusFilterChange.emit($event)"
+    >
+      @for (option of statusOptions(); track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  </label>
+
+  <button
+    type="button"
+    class="clear-filters-button"
+    [disabled]="!hasActiveFilters()"
+    (click)="clearFilters.emit()"
+  >
+    Clear filters
+  </button>
+</div>

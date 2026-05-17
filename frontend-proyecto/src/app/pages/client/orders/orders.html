@@ -1,0 +1,115 @@
+<div class="orders-container">
+    <div class="orders-header">
+        <h1>My orders</h1>
+        <p>Track your purchases and manage your orders</p>
+    </div>
+
+    <!-- Loading -->
+    @if (loading) {
+    <div class="orders-loading">
+        <p-progressSpinner strokeWidth="4" styleClass="orders-spinner" />
+    </div>
+    }
+
+    <!-- Error -->
+    @if (error) {
+    <div class="orders-error">
+        <i class="pi pi-exclamation-triangle"></i>
+        <p>{{ error }}</p>
+    </div>
+    }
+
+    <!-- Empty state -->
+    @if (!loading && !error && orders.length === 0) {
+    <div class="orders-empty">
+        <i class="pi pi-shopping-bag orders-empty__icon"></i>
+        <p>No tienes pedidos aún.</p>
+    </div>
+    }
+
+    <!-- Orders grid -->
+    @if (!loading && !error && orders.length > 0) {
+    <div class="orders-grid">
+        @for (order of orders; track order.id) {
+        <app-card class="order-card" [clickable]="true" (cardClick)="openOrder(order)">
+            <div class="card-content">
+                <div class="order-info">
+                    <h3>Order #{{ order.id }}</h3>
+                    <p class="order-date">{{ (order.createdAt | date:'mediumDate') || 'no hay fecha' }}</p>
+                    <p class="order-total">{{ order.totalPrice | currency:'EUR':'symbol':'1.2-2' }}</p>
+                </div>
+                <div class="order-status">
+                    <p-tag [value]="getStatusLabel(order.status)" [severity]="getStatusSeverity(order.status)" />
+                </div>
+            </div>
+        </app-card>
+        }
+    </div>
+    }
+</div>
+
+<!-- Order detail dialog -->
+<p-dialog [(visible)]="dialogVisible" [modal]="true" [closable]="true" [dismissableMask]="true" [draggable]="false"
+    [resizable]="false" header="Order details" styleClass="order-dialog" [style]="{ width: '500px' }">
+
+    @if (selectedOrder) {
+    <div class="dialog-content">
+
+        <div class="dialog-row">
+            <span class="dialog-label">Order</span>
+            <span class="dialog-value">#{{ selectedOrder.id }}</span>
+        </div>
+        <div class="dialog-row">
+            <span class="dialog-label">Date</span>
+            <span class="dialog-value">{{ selectedOrder.createdAt | date:'mediumDate' }}</span>
+        </div>
+        <div class="dialog-row">
+            <span class="dialog-label">Status</span>
+            <p-tag [value]="getStatusLabel(selectedOrder.status)"
+                [severity]="getStatusSeverity(selectedOrder.status)" />
+        </div>
+
+        <!-- Items -->
+        @if (selectedOrder.details && selectedOrder.details.length > 0) {
+        <div class="dialog-items">
+            <span class="dialog-label">Products</span>
+            <ul class="order-items-list">
+                @for (item of selectedOrder.details; track item.productId) {
+                <li class="order-item-row">
+                    <span class="order-item-name">{{ item.productName }}</span>
+                    <span class="order-item-qty">× {{ item.quantity }}</span>
+                    <span class="order-item-price">
+                        {{ item.salePrice * item.quantity | currency:'EUR':'symbol':'1.2-2' }}
+                    </span>
+                </li>
+                }
+            </ul>
+        </div>
+        }
+
+        <div class="dialog-row">
+            <span class="dialog-label">Total</span>
+            <span class="dialog-value dialog-total">
+                {{ selectedOrder.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
+            </span>
+        </div>
+
+        @if (selectedOrder.maxPickupDate) {
+        <div class="dialog-row">
+            <span class="dialog-label">Max pickup</span>
+            <span class="dialog-value">{{ selectedOrder.maxPickupDate | date:'mediumDate' }}</span>
+        </div>
+        }
+
+        @if (selectedOrder.status.toUpperCase() === 'PENDING') {
+        <div class="dialog-actions">
+            <p-button label="Cancelar pedido" icon="pi pi-times-circle" severity="danger" [outlined]="true"
+                styleClass="w-full" [loading]="cancellingOrder" (onClick)="cancelOrder(selectedOrder)">
+            </p-button>
+        </div>
+        }
+
+    </div>
+    }
+
+</p-dialog>

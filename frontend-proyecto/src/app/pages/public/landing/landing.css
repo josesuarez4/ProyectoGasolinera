@@ -1,0 +1,266 @@
+:host {
+  /* BUTTON TEXT COLOR */
+  --p-button-primary-color: #ffffff;
+  --p-button-primary-hover-color: #1a4fbd;
+  /* BUTTON BACKGROUND COLOR */
+  --p-button-primary-background: #1a4fbd;
+  --p-button-primary-hover-background: #ffffff;
+  /* BUTTON HOVER TEXT COLOR */
+  --p-button-primary-hover-text-color: #1a4fbd;
+
+  /* BUTTON BORDER COLOR */
+  --p-button-primary-border-color: #1a4fbd;
+  --p-button-primary-hover-border-color: #ffffff;
+
+  --p-button-primary-active-background: #1a4fbd;
+  --p-button-primary-active-color: #ffffff;
+  --p-button-primary-active-border-color: #1a4fbd;
+}
+
+/* Outlined en hero oscuro — blanco */
+:host ::ng-deep .p-button.p-button-outlined {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  background: transparent !important;
+}
+
+:host ::ng-deep .p-button.p-button-outlined:hover {
+  background: #1a4fbd !important;
+  border-color: #1a4fbd !important;
+}
+
+.landing-container {
+  background-color: var(--surface-ground);
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 100px 20px;
+  background-image: url('/img/gasolinera_img.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  text-align: center;
+  background-color: #1c1f21c6;
+  background-blend-mode: overlay;
+}
+
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-tag {
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.hero-section h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 20px 0;
+  line-height: 1.1;
+}
+
+.hero-section p {
+  font-size: 1.25rem;
+  color: white;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* Secciones Generales */
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 0px;
+}
+
+.section-services {
+  background-color: #091f4a;
+  background-image: linear-gradient(to bottom, #ffffff 0%, #091f4a 120px);
+  padding: 80px 0 40px;
+}
+
+:host-context(.my-app-dark) .section-services {
+  background-color: #091f4a;
+  background-image: linear-gradient(to bottom, #020617 0%, #091f4a 120px);
+}
+
+.section-services .section-title {
+  color: #ffffff;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.text-content {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.text-content .section-title {
+  margin-top: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* About Section */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder {
+  background: transparent;
+  height: 450px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px;
+}
+
+.stats-overlay {
+  position: absolute;
+  bottom: 30px;
+  right: -20px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.stats-label {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.features-list {
+  display: flex;
+  gap: 20px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.features-list i {
+  color: #28a745;
+  margin-right: 5px;
+}
+
+/* Services Section */
+.cards-grid {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.service-card {
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #ffffff !important;
+  background-color: #1a4fbd;
+  padding: 15px;
+  border-radius: 50%;
+  margin: 1rem 0;
+}
+
+/* Footer */
+.main-footer {
+  padding: 40px 20px;
+  background: white;
+  border-top: 1px solid #dee2e6;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.social-icons {
+  display: flex;
+  gap: 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Navigation arrows - blue */
+:host ::ng-deep .about-carousel .p-carousel-prev-button button,
+:host ::ng-deep .about-carousel .p-carousel-next-button button {
+  background: #1a4fbd !important;
+  color: white !important;
+  margin: 20px !important;
+  border: none !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+/* Indicators - bigger */
+:host ::ng-deep .about-carousel .p-carousel-indicator-button {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: #cbd5e1 !important;
+  border: none !important;
+}
+
+/* Active indicator - pill shape */
+:host ::ng-deep .about-carousel .p-carousel-indicator-active .p-carousel-indicator-button {
+  width: 32px !important;
+  border-radius: 6px !important;
+  background: #1a4fbd !important;
+}
+
+:host ::ng-deep .hero-btns .p-button {
+  min-width: 180px !important;
+}

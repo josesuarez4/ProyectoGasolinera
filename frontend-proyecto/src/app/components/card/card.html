@@ -1,0 +1,27 @@
+<p-card [header]="header()" [subheader]="subheader()" [class]="styleClass()" [style]="cardStyle()">
+  @if (cardHeaderTemplate) {
+    <ng-template pTemplate="header">
+      <ng-container [ngTemplateOutlet]="cardHeaderTemplate"></ng-container>
+    </ng-template>
+  }
+
+  @if (cardTitleTemplate) {
+    <ng-template pTemplate="title">
+      <ng-container [ngTemplateOutlet]="cardTitleTemplate"></ng-container>
+    </ng-template>
+  }
+
+  @if (cardSubtitleTemplate) {
+    <ng-template pTemplate="subtitle">
+      <ng-container [ngTemplateOutlet]="cardSubtitleTemplate"></ng-container>
+    </ng-template>
+  }
+
+  @if (cardFooterTemplate) {
+    <ng-template pTemplate="footer">
+      <ng-container [ngTemplateOutlet]="cardFooterTemplate"></ng-container>
+    </ng-template>
+  }
+
+  <ng-content></ng-content>
+</p-card>

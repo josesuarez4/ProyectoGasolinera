@@ -1,0 +1,73 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Welcome back to your overview</p>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="dashboard-loading">
+      <p-progressSpinner strokeWidth="4" />
+    </div>
+  }
+
+  <!-- Stats cards -->
+  @if (!loading) {
+    <div class="cards-grid">
+      @for (stat of clientSummary; track stat.title) {
+        <app-card class="stat-card">
+          <div class="card-content">
+            <div class="stat-info">
+              <h3>{{ stat.title }}</h3>
+              <h2>{{ stat.value }}</h2>
+            </div>
+            <div class="stat-icon">
+              <i class="pi pi-chart-line"></i>
+            </div>
+          </div>
+        </app-card>
+      }
+    </div>
+
+    <!-- Recent activity -->
+    <div class="recent-activity">
+      <h2>Recent Activity</h2>
+      <div class="table-responsive">
+        <p-table
+          [value]="recentActivity"
+          [rows]="5"
+          styleClass="table"
+          [responsiveLayout]="'scroll'"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-activity>
+            <tr>
+              <td>{{ activity.date | date: 'mediumDate' }}</td>
+              <td>{{ activity.type }}</td>
+              <td>{{ activity.total | currency: 'EUR' : 'symbol' : '1.2-2' }}</td>
+              <td>
+                <p-tag
+                  [value]="getStatusLabel(activity.status)"
+                  [severity]="getStatusSeverity(activity.status)"
+                >
+                </p-tag>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4" class="empty-message-cell">No recent activity found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  }
+</div>

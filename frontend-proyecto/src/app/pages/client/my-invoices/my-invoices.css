@@ -1,0 +1,138 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--color-bg);
+  transition: background-color 0.25s ease;
+}
+
+.my-invoices {
+  width: min(94%, 1200px);
+  margin: 0 auto;
+  padding: 100px 0 4rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #1A4FBD;
+}
+
+:host-context(.my-app-dark) .eyebrow {
+  color: #60a5fa;
+}
+
+.invoices-header h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4d9fff 0%, #0D2B6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  margin: 0.25rem 0 0;
+}
+
+:host-context(.my-app-dark) .invoices-header h2 {
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.invoices-header .subtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0.25rem 0 0;
+}
+
+:host-context(.my-app-dark) .invoices-header .subtitle {
+  color: #94a3b8;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(26, 79, 189, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(26, 79, 189, 0.06);
+  transition: all 0.25s ease;
+}
+
+:host-context(.my-app-dark) .filters-bar {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: #1A4FBD;
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+:host-context(.my-app-dark) .search-icon {
+  color: #60a5fa;
+}
+
+.minimal-input {
+  width: 100%;
+  padding: 10px 16px 10px 40px !important;
+  border: 1px solid rgba(26, 79, 189, 0.2) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #1e293b;
+  transition: all 0.25s ease;
+}
+
+.minimal-input:focus {
+  border-color: rgba(26, 79, 189, 0.5) !important;
+  outline: none;
+}
+
+:host-context(.my-app-dark) .minimal-input {
+  background: rgba(30, 41, 59, 0.6) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+  color: #f1f5f9;
+}
+
+:host-context(.my-app-dark) .minimal-input:focus {
+  border-color: #3b82f6 !important;
+  background: rgba(30, 41, 59, 0.8) !important;
+}
+
+:host ::ng-deep .filter-select {
+  min-width: 140px;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-select {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-select:not(.p-disabled).p-focus {
+  border-color: #3b82f6;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-select .p-select-label {
+  color: #f1f5f9;
+}

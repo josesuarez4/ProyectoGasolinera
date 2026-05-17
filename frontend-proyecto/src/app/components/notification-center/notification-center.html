@@ -1,0 +1,81 @@
+<div class="notification-center">
+  <p-button
+    icon="pi pi-bell"
+    [rounded]="true"
+    [text]="true"
+    severity="secondary"
+    [badge]="badgeLabel()"
+    badgeSeverity="danger"
+    ariaLabel="Notifications"
+    [attr.aria-haspopup]="'dialog'"
+    [attr.aria-expanded]="isOpen()"
+    (onClick)="togglePanel()"
+  ></p-button>
+
+  @if (isOpen()) {
+    <div
+      class="notification-panel"
+      role="dialog"
+      aria-label="Notifications"
+      [style.position]="'fixed'"
+      [style.top.px]="panelStyles()?.top"
+      [style.left.px]="panelStyles()?.left"
+      [style.width.px]="panelStyles()?.width"
+    >
+      <section class="panel-header">
+        <div class="panel-header-content">
+          <div>
+            <p class="panel-title">Notifications</p>
+            <p class="panel-subtitle">Your recent activity and alerts.</p>
+          </div>
+          @if (unreadCount() > 0) {
+            <div class="panel-header-actions">
+              <span class="unread-pill">{{ unreadCount() }} new</span>
+              <p-button
+                icon="pi pi-check-circle"
+                label="Mark all as read"
+                [text]="true"
+                size="small"
+                severity="secondary"
+                [disabled]="isMarkingAllRead()"
+                (onClick)="markAllAsRead()"
+              ></p-button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <div class="panel-body" aria-live="polite">
+        @if (loading()) {
+          <p class="panel-empty">Loading notifications...</p>
+        } @else if (notifications().length === 0) {
+          <p class="panel-empty">No notifications yet.</p>
+        } @else {
+          <ul class="notification-list" role="list">
+            @for (notification of notifications(); track notification.id) {
+              <li
+                class="notification-item"
+                [class.notification-unread]="notification.status === 'ACTIVE'"
+              >
+                <button
+                  type="button"
+                  class="notification-button"
+                  (click)="handleNotificationClick(notification)"
+                  [attr.aria-label]="buildAriaLabel(notification)"
+                >
+                  <div class="notification-message">{{ notification.message }}</div>
+                  <div class="notification-meta">
+                    <span class="notification-type">{{ formatType(notification.type) }}</span>
+                    <time class="notification-time" [attr.datetime]="notification.createdAt">
+                      {{ notification.createdAt | date: 'short' }}
+                    </time>
+                  </div>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,64 @@
+<main class="auth-page">
+  <section class="auth-card">
+    <p class="eyebrow">Gas Station</p>
+    <h1>Sign up</h1>
+    <p class="description">Put your credentials to register in the system.</p>
+
+    @if (errorMessage()) {
+    <p-message severity="error" [text]="errorMessage()" styleClass="w-full mb-4"></p-message>
+    }
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="field">
+        <label for="name" class="block mb-2 font-semibold">Name</label>
+        <input id="name" type="text" pInputText formControlName="name" placeholder="Name..." class="w-full"
+          [class.ng-invalid]="form.controls.name.touched && form.controls.name.invalid" />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="p-error block mt-1">Name is required (min. 2 characters).</small>
+        }
+      </div>
+
+      <div class="field mt-4">
+        <label for="birthDate" class="block mb-2 font-semibold">Birth date</label>
+        <input id="birthDate" type="date" pInputText formControlName="birthDate" class="w-full"
+          [class.ng-invalid]="form.controls.birthDate.touched && form.controls.birthDate.invalid" />
+        @if (form.controls.birthDate.touched && form.controls.birthDate.invalid) {
+        <small class="p-error block mt-1">Birth date is required.</small>
+        }
+      </div>
+
+      <div class="field mt-4">
+        <label for="email" class="block mb-2 font-semibold">Email</label>
+        <input id="email" type="email" pInputText formControlName="email" placeholder="email@email.com" class="w-full"
+          [class.ng-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="p-error block mt-1">Introduce a valid email.</small>
+        }
+      </div>
+
+      <div class="field mt-4">
+        <label for="password" class="block mb-2 font-semibold">Password</label>
+        <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="true"
+          promptLabel="Choose a password" weakLabel="Weak" mediumLabel="Medium" strongLabel="Strong"
+          placeholder="********" styleClass="w-full login-password" inputStyleClass="w-full login-password-input"
+          [class.ng-invalid]="form.controls.password.touched && form.controls.password.invalid"></p-password>
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+        <small class="p-error block mt-1">Password must be at least 6 characters long.</small>
+        }
+      </div>
+
+      <div class="mt-6">
+        <p-button type="submit" label="Register" [loading]="submitting()" styleClass="w-full p-button-primary"
+          [disabled]="form.invalid" (onClick)="submit()"></p-button>
+      </div>
+    </form>
+
+    <div class="footer-actions">
+      <p class="mb-4 text-sm color-secondary">
+        Already have an account? <a routerLink="/login">Login</a>
+      </p>
+      <a routerLink="/" class="back-link">Back to home</a>
+    </div>
+  </section>
+</main>

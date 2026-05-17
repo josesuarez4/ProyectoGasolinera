@@ -1,0 +1,308 @@
+:host {
+  display: block;
+}
+
+.new-supplier-order-page {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page-header {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1rem;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.header-content h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.header-content p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+.back-button {
+  margin-top: 0.25rem;
+}
+
+.order-form {
+  display: grid;
+  gap: 2rem;
+}
+
+.form-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.items-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.items-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+}
+
+.items-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.item-row {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.item-title {
+  font-weight: 600;
+  color: #334155;
+}
+
+.item-fields {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.checkbox-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.checkbox-field label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.item-total {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-align: right;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-total label {
+  margin: 0;
+}
+
+.total-value {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.order-total {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+}
+
+.order-total .total-amount {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #1d4ed8;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.actions p-button {
+  flex: 1;
+}
+
+/* Make primeng components fill container */
+::ng-deep .p-select,
+::ng-deep .p-inputnumber,
+::ng-deep .p-inputtext,
+::ng-deep .p-button {
+  width: 100%;
+}
+
+.items-header p-button {
+  width: auto;
+}
+
+/* Force blue theme for primary buttons in the form */
+.form-footer p-button[severity="primary"] ::ng-deep .p-button {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.form-footer p-button[severity="primary"] ::ng-deep .p-button:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+}
+
+@media (max-width: 640px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  .order-total {
+    justify-content: space-between;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
+
+/* ── Dark Mode Overrides ─────────────────────────────────────────────────── */
+
+:host-context(html.my-app-dark) {
+  .page-header {
+    border-bottom-color: rgba(148, 163, 184, 0.12);
+  }
+
+  .header-content h2,
+  .items-header h3,
+  .item-title,
+  .total-value {
+    color: #f8fafc;
+  }
+
+  .header-content p,
+  .field label,
+  .order-total span:not(.total-amount) {
+    color: #94a3b8;
+  }
+
+  .form-section,
+  .form-footer,
+  .item-total {
+    background: rgba(15, 23, 42, 0.76);
+    border-color: rgba(148, 163, 184, 0.12);
+  }
+
+  .item-row {
+    background: rgba(30, 41, 59, 0.45);
+    border-color: rgba(148, 163, 184, 0.12);
+  }
+
+  .item-header {
+    border-bottom-color: rgba(148, 163, 184, 0.1);
+  }
+
+  .error-message {
+    background: rgba(153, 27, 27, 0.15);
+    border-color: rgba(153, 27, 27, 0.3);
+    color: #fca5a5;
+  }
+
+  .error-text {
+    color: #f87171;
+  }
+
+  .order-total .total-amount {
+    color: #3b82f6;
+  }
+
+  /* PrimeNG input overrides in dark mode */
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-inputnumber-input,
+  ::ng-deep .p-select {
+    background-color: #1e293b !important;
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    color: #e2e8f0 !important;
+  }
+
+  ::ng-deep .p-select-label {
+    color: #e2e8f0 !important;
+  }
+}

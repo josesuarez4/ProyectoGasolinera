@@ -1,0 +1,141 @@
+<p-dialog
+  [header]="title"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '580px', maxWidth: '96vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="close()"
+  styleClass="gf-dialog"
+>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="gf-form">
+    @for (field of config; track field.key) {
+      @if (!field.showIf || field.showIf(form.value)) {
+        <div class="gf-field" [class.gf-field--half]="field.colSpan === 'col-6'">
+
+          <!-- Row: input LEFT · label RIGHT -->
+          <div class="gf-field-row">
+            <!-- Input block (left) -->
+            <div class="gf-input-wrap">
+              @switch (field.type) {
+                @case ('text') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder || ''"
+                  />
+                }
+                @case ('password') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    type="password"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder || ''"
+                  />
+                }
+                @case ('email') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    type="email"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder || ''"
+                  />
+                }
+                @case ('number') {
+                  <p-inputNumber
+                    class="gf-input-number"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [useGrouping]="false"
+                    [placeholder]="field.placeholder || ''"
+                  ></p-inputNumber>
+                }
+                @case ('currency') {
+                  <p-inputNumber
+                    class="gf-input-number"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    mode="currency"
+                    currency="EUR"
+                    locale="de-DE"
+                    [placeholder]="field.placeholder || ''"
+                  ></p-inputNumber>
+                }
+                @case ('select') {
+                  <select class="gf-select" [id]="field.key" [formControlName]="field.key">
+                    <option value="" disabled selected>
+                      {{ field.placeholder || 'Select one option' }}
+                    </option>
+                    @for (opt of field.options; track opt.value) {
+                      <option [value]="opt.value">{{ opt.label }}</option>
+                    }
+                  </select>
+                }
+                @case ('time') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    type="time"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                  />
+                }
+                @case ('date') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    type="date"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                  />
+                }
+                @case ('datetime-local') {
+                  <input
+                    pInputText
+                    class="gf-input"
+                    type="datetime-local"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                  />
+                }
+              }
+            </div>
+
+            <!-- Label block (right) -->
+            <label class="gf-label" [for]="field.key">
+              {{ field.label }}
+            </label>
+          </div>
+
+          @if (form.get(field.key)?.invalid && form.get(field.key)?.touched) {
+            <small class="gf-error">This field is required or invalid.</small>
+          }
+        </div>
+      }
+    }
+
+    <!-- Actions -->
+    <div class="gf-actions">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        [text]="true"
+        styleClass="gf-btn-cancel"
+        (onClick)="close()"
+      ></p-button>
+      <p-button
+        [label]="saveLabel"
+        icon="pi pi-check"
+        type="submit"
+        styleClass="gf-btn-save"
+        [disabled]="form.invalid"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>

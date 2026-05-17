@@ -1,0 +1,85 @@
+<section class="staff-clients-page" aria-label="Client information table">
+  <header class="clients-header">
+    <div>
+      <h2>Client Directory</h2>
+      <p>Review client profiles, loyalty codes and points.</p>
+    </div>
+    @if (canCreateClient()) {
+      <div class="flex justify-content-end mb-4">
+        <p-button label="New Client" icon="pi pi-plus" severity="primary" (onClick)="openCreate()">
+        </p-button>
+      </div>
+    }
+  </header>
+
+  <div class="clients-filters" aria-label="Client filters">
+    <label class="filter-field" for="client-email-filter">
+      <span>Email</span>
+      <input
+        id="client-email-filter"
+        type="text"
+        class="filter-input"
+        [value]="emailFilter()"
+        placeholder="Search by email"
+        (input)="onEmailFilterChange($any($event.target).value)"
+      />
+    </label>
+
+    <label class="filter-field" for="client-loyalty-filter">
+      <span>Loyalty code</span>
+      <input
+        id="client-loyalty-filter"
+        type="text"
+        class="filter-input"
+        [value]="loyaltyCodeFilter()"
+        placeholder="FID-000000"
+        (input)="onLoyaltyCodeFilterChange($any($event.target).value)"
+      />
+    </label>
+
+    <button
+      type="button"
+      class="clear-filters-button"
+      [disabled]="!hasActiveFilters()"
+      (click)="clearFilters()"
+    >
+      Clear filters
+    </button>
+  </div>
+
+  <!-- Status and Error Messages -->
+  <div class="messages-container">
+    @if (statusMessage()) {
+      <div class="status-message">{{ statusMessage() }}</div>
+    }
+    @if (errorMessage()) {
+      <div class="error-message">{{ errorMessage() }}</div>
+    }
+  </div>
+
+  <app-table
+    entityLabel="Clients"
+    title="Client Directory"
+    description="Review client profiles, loyalty codes and points."
+    emptyMessage="No clients match the current filters."
+    [loading]="loading()"
+    [rows]="filteredRows()"
+    [columns]="columns"
+    [paginator]="true"
+    [rowsPerPage]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} clients"
+  ></app-table>
+
+  <app-generic-form
+    [(visible)]="showDialog"
+    [title]="'Create New Client'"
+    [saveLabel]="'Save'"
+    [config]="clientFormConfig"
+    [initialData]="clientToEdit()"
+    (onSave)="onSaveClient($event)"
+    (visibleChange)="!$event ? clientToEdit.set(null) : null"
+  >
+  </app-generic-form>
+</section>

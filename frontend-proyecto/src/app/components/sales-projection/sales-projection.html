@@ -1,0 +1,137 @@
+<section class="sp-wrapper" aria-label="Sales Projection Panel">
+
+  <div class="sp-cards-grid">
+
+    <div class="sp-card sp-card--volume">
+      <div class="sp-card__icon-wrap sp-card__icon-wrap--volume">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <div class="sp-card__body">
+        <span class="sp-card__label">Total Projected Demand</span>
+        @if (loading) {
+          <span class="sp-card__skeleton"></span>
+        } @else if (prediction) {
+          <span class="sp-card__value">{{ totalProjected | number:'1.0-1' }} <small>units</small></span>
+          <span class="sp-card__sub">over {{ prediction.horizonDays }} days</span>
+        } @else {
+          <span class="sp-card__value sp-card__value--empty">—</span>
+        }
+      </div>
+    </div>
+
+    <div class="sp-card sp-card--stock" [ngClass]="{ 'sp-card--alert': needsPurchase && !loading && prediction }">
+      <div class="sp-card__icon-wrap sp-card__icon-wrap--stock">
+        <i class="pi pi-box"></i>
+      </div>
+      <div class="sp-card__body">
+        <span class="sp-card__label">Optimal Stock to Hold</span>
+        @if (loading) {
+          <span class="sp-card__skeleton"></span>
+        } @else if (prediction) {
+          <span class="sp-card__value">{{ optimalStock | number:'1.0-0' }} <small>units</small></span>
+          @if (needsPurchase) {
+            <span class="sp-card__sub sp-card__sub--warn">
+              <i class="pi pi-shopping-cart"></i>
+              Buy {{ stockDelta | number:'1.0-0' }} more units
+            </span>
+          } @else {
+            <span class="sp-card__sub sp-card__sub--ok">
+              <i class="pi pi-check-circle"></i>
+              Current stock is sufficient
+            </span>
+          }
+        } @else {
+          <span class="sp-card__value sp-card__value--empty">—</span>
+        }
+      </div>
+    </div>
+
+    <div class="sp-card sp-card--confidence">
+      <div class="sp-card__icon-wrap sp-card__icon-wrap--confidence">
+        <i class="pi pi-sliders-h"></i>
+      </div>
+      <div class="sp-card__body">
+        <span class="sp-card__label">Confidence Range</span>
+        @if (loading) {
+          <span class="sp-card__skeleton"></span>
+        } @else if (prediction) {
+          <span class="sp-card__value">
+            {{ confidenceLow | number:'1.0-1' }}
+            <small>–</small>
+            {{ confidenceHigh | number:'1.0-1' }}
+            <small>units</small>
+          </span>
+          <span class="sp-card__sub">95% confidence interval</span>
+        } @else {
+          <span class="sp-card__value sp-card__value--empty">—</span>
+        }
+      </div>
+    </div>
+
+    <div class="sp-card sp-card--trend">
+      <div class="sp-card__icon-wrap sp-card__icon-wrap--trend">
+        <i class="pi pi-compass"></i>
+      </div>
+      <div class="sp-card__body">
+        <span class="sp-card__label">Demand Trend</span>
+        @if (loading) {
+          <span class="sp-card__skeleton"></span>
+        } @else if (prediction) {
+          <span class="sp-card__value sp-card__value--trend" [ngClass]="trendClass">
+            <i [class]="trendIcon"></i>
+            {{ trendLabel }}
+          </span>
+          <span class="sp-card__sub">
+            Projected avg: {{ projectedAvgDaily | number:'1.1-1' }} units/day
+          </span>
+        } @else {
+          <span class="sp-card__value sp-card__value--empty">—</span>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sp-chart-panel">
+
+    <div class="sp-chart-header">
+      <div class="sp-chart-legend-info">
+        <span class="sp-legend-dot sp-legend-dot--real"></span>
+        <span class="sp-legend-label">Historical sales</span>
+        <span class="sp-legend-separator">·</span>
+        <span class="sp-legend-dot sp-legend-dot--proj"></span>
+        <span class="sp-legend-label">AI projection (dashed)</span>
+      </div>
+      @if (prediction) {
+        <span class="sp-chart-generated">
+          Generated: {{ prediction.generatedAt | date:'dd MMM yyyy, HH:mm' }}
+        </span>
+      }
+    </div>
+
+    @if (!isBrowser) {
+      <div class="sp-chart-placeholder">Chart available in browser only.</div>
+
+    } @else if (loading) {
+      <p-skeleton height="320px" borderRadius="12px" />
+
+    } @else if (hasChart) {
+      <p-chart
+        type="line"
+        [data]="chartData"
+        [options]="chartOptions"
+        [style]="{ height: '320px', width: '100%' }">
+      </p-chart>
+
+    } @else {
+      <div class="sp-chart-empty">
+        <i class="pi pi-chart-bar sp-chart-empty__icon"></i>
+        <p class="sp-chart-empty__message">
+          Select a product and click <strong>Predict</strong> to generate the forecast.
+        </p>
+      </div>
+    }
+
+  </div>
+
+</section>

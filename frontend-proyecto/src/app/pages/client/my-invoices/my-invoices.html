@@ -1,0 +1,105 @@
+<section class="my-invoices">
+  <header class="invoices-header">
+    <div>
+      <p class="eyebrow">Client</p>
+      <h2>My Invoices</h2>
+      <p class="subtitle">View your purchase and return history</p>
+    </div>
+  </header>
+
+  <div class="filters-bar">
+    <div class="search-container">
+      <i class="pi pi-search search-icon"></i>
+      <input type="text" pInputText [(ngModel)]="searchCode" placeholder="Search by code..." class="minimal-input" />
+    </div>
+
+    <p-select [options]="paymentOptions" [(ngModel)]="filterPayment" (ngModelChange)="filterPayment.set($event)"
+      optionLabel="label" optionValue="value" placeholder="Payment" styleClass="filter-select" />
+
+    <p-select [options]="onlineOptions" [(ngModel)]="filterOnline" (ngModelChange)="filterOnline.set($event)"
+      optionLabel="label" optionValue="value" placeholder="Origin" styleClass="filter-select" />
+
+    <p-button label="Clear" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="clearFilters()" />
+  </div>
+
+  <app-table
+    title="My Invoices"
+    entityLabel="invoices"
+    [rows]="filteredTickets"
+    [columns]="columns"
+    [rowClickable]="true"
+    (rowClicked)="handleRowClick($event)"
+    [paginator]="true"
+    [rowsPerPage]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} invoices"
+    emptyMessage="No invoices found."
+  />
+
+  <p-dialog
+    [visible]="selectedInvoice() !== null"
+    (visibleChange)="selectedInvoice.set(null)"
+    [modal]="true"
+    [style]="{ width: '80vw' }"
+    [breakpoints]="{ '960px': '90vw', '640px': '100vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    [showHeader]="false"
+    styleClass="detail-dialog-custom"
+  >
+    @if (selectedInvoice(); as invoice) {
+      <app-detail-view
+        [title]="'Invoice #' + invoice.code"
+        [subtitle]="'Ticket details'"
+        [status]="invoice.paymentType"
+        [statusSeverity]="'info'"
+        (back)="selectedInvoice.set(null)"
+      >
+        <div sidebar>
+          <div class="info-block">
+            <p class="label">Date</p>
+            <p class="value">{{ invoice.date | date: 'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="info-block">
+            <p class="label">Total</p>
+            <p class="value highlight">{{ invoice.totalPrice | currency: 'EUR' }}</p>
+          </div>
+        </div>
+
+        <div main>
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Unit Price</th>
+                <th class="text-right">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of invoice['details'] || []; track item.id) {
+                <tr>
+                  <td>{{ item.productName }}</td>
+                  <td class="text-right">{{ item.quantity }}</td>
+                  <td class="text-right">
+                    {{ item.salePrice | currency: 'EUR' }}
+                  </td>
+                  <td class="text-right">
+                    <strong>
+                      {{ item.quantity * item.salePrice | currency: 'EUR' }}
+                    </strong>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4" class="text-center">No products in this invoice.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </app-detail-view>
+    }
+  </p-dialog>
+</section>

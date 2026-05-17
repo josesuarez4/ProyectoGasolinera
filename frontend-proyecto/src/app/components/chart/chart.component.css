@@ -1,0 +1,54 @@
+.chart-container {
+  width: 100%;
+}
+
+.chart-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--p-text-color, #333);
+}
+
+/* Estado vacío */
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: var(--p-surface-50, #f9fafb);
+  border: 1px dashed var(--p-surface-300, #d1d5db);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chart-empty__icon {
+  font-size: 2.5rem;
+  color: var(--p-surface-400, #9ca3af);
+}
+
+.chart-empty__message {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--p-text-muted-color, #6b7280);
+  text-align: center;
+}
+
+/* Dark Mode support */
+:host-context(html.my-app-dark) .chart-empty {
+  background-color: rgba(15, 23, 42, 0.6);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+:host-context(html.my-app-dark) .chart-empty__icon {
+  color: #64748b;
+}
+
+:host-context(html.my-app-dark) .chart-empty__message {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .chart-title {
+  color: #f8fafc;
+}

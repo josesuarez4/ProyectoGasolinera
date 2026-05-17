@@ -1,0 +1,45 @@
+<main class="auth-page">
+  <section class="auth-card">
+    <p class="eyebrow">Gas Station</p>
+    <h1>Login</h1>
+    <p class="description">Put your credentials to access your personal area.</p>
+
+    @if (registrationSuccess()) {
+    <p-message severity="success" text="¡Registro exitoso! Ya puedes iniciar sesión." styleClass="w-full mb-4"></p-message>
+    }
+
+    @if (errorMessage()) {
+    <p-message severity="error" [text]="errorMessage()" styleClass="w-full mb-4"></p-message>
+    }
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="email" class="block mb-2 font-semibold">Email</label>
+        <input id="email" type="email" pInputText formControlName="email" placeholder="email@email.com" class="w-full"
+          [class.ng-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="p-error block mt-1">Introduce un email válido.</small>
+        }
+      </div>
+
+      <div class="field mt-4">
+        <label for="password" class="block mb-2 font-semibold">Password</label>
+        <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false"
+          placeholder="********" Class="w-full login-password" inputStyleClass="w-full login-password-input"
+          [class.ng-invalid]="form.controls.password.touched && form.controls.password.invalid"></p-password>
+      </div>
+
+      <div class="mt-6">
+        <p-button type="submit" label="Login" [loading]="submitting()" styleClass="w-full p-button-primary"
+          [disabled]="form.invalid"></p-button>
+      </div>
+    </form>
+
+    <div class="footer-actions">
+      <p class="mb-4 text-sm color-secondary">
+        Don't have an account? <a routerLink="/register">Register</a>
+      </p>
+      <a routerLink="/" class="back-link">Back to home</a>
+    </div>
+  </section>
+</main>

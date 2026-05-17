@@ -1,0 +1,662 @@
+/* =====================================================
+   STAFF CASH REGISTERS — matches staff-layout aesthetic
+   ===================================================== */
+
+:host {
+  display: block;
+}
+
+/* ── Page wrapper ── */
+.staff-cash-registers-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ── Page header ── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.page-header p {
+  margin: 0.3rem 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* ── Status messages ── */
+.status-message,
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 0.85rem;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.status-message {
+  background: rgba(219, 234, 254, 0.7);
+  border: 1px solid rgba(147, 197, 253, 0.6);
+  color: #1e40af;
+}
+
+.error-message {
+  background: rgba(254, 226, 226, 0.7);
+  border: 1px solid rgba(252, 165, 165, 0.6);
+  color: #991b1b;
+}
+
+/* ── Summary cards grid ── */
+.cash-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* ── Base card ── */
+.cash-card {
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cash-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+}
+
+/* ── Card header row ── */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Metric labels & values ── */
+.metric-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #64748b;
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.metric-sub {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+}
+
+/* ── Status badge ── */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.status-open {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.status-closed {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-open .status-dot {
+  background: #22c55e;
+  box-shadow: 0 0 0 4px #dcfce7;
+  animation: pulse-green 2s infinite;
+}
+
+.status-closed .status-dot {
+  background: #ef4444;
+}
+
+@keyframes pulse-green {
+  0%   { box-shadow: 0 0 0 0px rgba(34, 197, 94, 0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0px rgba(34, 197, 94, 0); }
+}
+
+/* ── Date row under status ── */
+.session-date {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* ── Register action buttons ── */
+.register-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+:host ::ng-deep .register-actions .p-button {
+  width: 100%;
+  justify-content: center;
+  border-radius: 0.75rem;
+}
+
+/* ── Summary stats (Cash / Card grid) ── */
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.summary-stat {
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.summary-stat-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.summary-stat-value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ── Empty state ── */
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.76);
+  border-radius: 1.5rem;
+  border: 2px dashed rgba(148, 163, 184, 0.35);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  gap: 0.75rem;
+}
+
+.icon-wrapper {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(145deg, rgba(29, 78, 216, 0.12), rgba(245, 158, 11, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-container h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.empty-state-container p {
+  margin: 0;
+  color: #64748b;
+  max-width: 36ch;
+  line-height: 1.6;
+}
+
+/* ── History section ── */
+.history-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.history-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.history-header p {
+  margin: 0.2rem 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+/* ── Filters bar ── */
+.history-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 0.85rem;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.filter-field {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 12rem;
+}
+
+.filter-field span {
+  font-size: 0.875rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.filter-input {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 0.6rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.75rem;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+}
+
+.clear-filters-button {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 0.6rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.85rem;
+  background: #ffffff;
+  color: #334155;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.clear-filters-button:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.clear-filters-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Row highlights ── */
+::ng-deep .row-descuadre {
+  background-color: rgba(239, 68, 68, 0.07) !important;
+}
+
+::ng-deep .p-datatable-tbody > tr.row-descuadre:hover {
+  background-color: rgba(239, 68, 68, 0.14) !important;
+}
+
+::ng-deep .row-descuadre td:first-child {
+  box-shadow: inset 4px 0 0 0 #ef4444;
+}
+
+::ng-deep .row-cuadre {
+  background-color: rgba(16, 185, 129, 0.03) !important;
+}
+
+::ng-deep .p-datatable-tbody > tr.row-cuadre:hover {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+::ng-deep .row-cuadre td:first-child {
+  box-shadow: inset 4px 0 0 0 #22c55e;
+}
+
+/* ── Analysis dashboard ── */
+.analysis-section {
+  display: grid;
+  gap: 1.2rem;
+  padding: 1.4rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.analysis-section h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.analysis-section > p {
+  margin: 0.2rem 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.stats-grid-analysis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card-analysis {
+  background: #f8fafc;
+  padding: 1.1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: transform 0.18s ease;
+}
+
+.stat-card-analysis:hover {
+  transform: translateY(-2px);
+}
+
+.stat-card-analysis.warning {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(254, 242, 242, 0.6);
+}
+
+.stat-label-analysis {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #64748b;
+}
+
+.stat-value-analysis {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.stat-sub-analysis {
+  display: flex;
+  gap: 0.85rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+}
+
+.stat-desc-analysis {
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.analysis-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+@media (max-width: 900px) {
+  .analysis-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analysis-chart-wrap {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1rem;
+  padding: 1.2rem;
+  background: #ffffff;
+}
+
+.analysis-chart-wrap h4 {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.empty-analysis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2.5rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ── Notes container ── */
+.notes-container {
+  background: rgba(248, 250, 252, 0.9);
+  border-left: 4px solid var(--color-primary);
+  padding: 1.1rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .cash-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .cash-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-filters {
+    padding: 0.75rem;
+  }
+}
+
+/* =====================================================
+   DARK MODE — html.my-app-dark
+   ===================================================== */
+
+:host-context(html.my-app-dark) .page-header h1,
+:host-context(html.my-app-dark) .history-header h2,
+:host-context(html.my-app-dark) .analysis-section h2,
+:host-context(html.my-app-dark) .empty-state-container h2,
+:host-context(html.my-app-dark) .analysis-chart-wrap h4 {
+  color: #f1f5f9;
+}
+
+:host-context(html.my-app-dark) .page-header p,
+:host-context(html.my-app-dark) .history-header p,
+:host-context(html.my-app-dark) .metric-sub,
+:host-context(html.my-app-dark) .stat-desc-analysis,
+:host-context(html.my-app-dark) .stat-sub-analysis,
+:host-context(html.my-app-dark) .empty-state-container p,
+:host-context(html.my-app-dark) .analysis-section > p {
+  color: #64748b;
+}
+
+:host-context(html.my-app-dark) .metric-label,
+:host-context(html.my-app-dark) .stat-label-analysis,
+:host-context(html.my-app-dark) .summary-stat-label {
+  color: #64748b;
+}
+
+/* Cards */
+:host-context(html.my-app-dark) .cash-card {
+  background: rgba(15, 23, 42, 0.78);
+  border-color: rgba(148, 163, 184, 0.14);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:host-context(html.my-app-dark) .cash-card:hover {
+  border-color: rgba(29, 78, 216, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+:host-context(html.my-app-dark) .metric-value,
+:host-context(html.my-app-dark) .summary-stat-value,
+:host-context(html.my-app-dark) .stat-value-analysis {
+  color: #f1f5f9;
+}
+
+:host-context(html.my-app-dark) .summary-stat {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+/* Filters */
+:host-context(html.my-app-dark) .history-filters {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+:host-context(html.my-app-dark) .filter-field span {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) .filter-input,
+:host-context(html.my-app-dark) .clear-filters-button {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+:host-context(html.my-app-dark) .filter-input::placeholder {
+  color: #475569;
+}
+
+:host-context(html.my-app-dark) .filter-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+}
+
+:host-context(html.my-app-dark) .filter-input option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .clear-filters-button:hover:not(:disabled) {
+  background: #334155;
+  border-color: #475569;
+}
+
+:host-context(html.my-app-dark) .clear-filters-button:disabled {
+  opacity: 0.45;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+/* Empty state */
+:host-context(html.my-app-dark) .empty-state-container {
+  background: rgba(15, 23, 42, 0.76);
+  border-color: rgba(148, 163, 184, 0.14);
+}
+
+/* Analysis */
+:host-context(html.my-app-dark) .analysis-section {
+  background: rgba(15, 23, 42, 0.76);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) .stat-card-analysis {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) .stat-card-analysis.warning {
+  background: rgba(127, 29, 29, 0.18);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+:host-context(html.my-app-dark) .analysis-chart-wrap {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) .empty-analysis {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(148, 163, 184, 0.12);
+  color: #475569;
+}
+
+/* Row highlights dark */
+:host-context(html.my-app-dark) ::ng-deep .row-descuadre {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .p-datatable-tbody > tr.row-descuadre:hover {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .row-cuadre {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .p-datatable-tbody > tr.row-cuadre:hover {
+  background-color: rgba(34, 197, 94, 0.18) !important;
+}

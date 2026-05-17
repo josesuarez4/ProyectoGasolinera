@@ -1,0 +1,107 @@
+<section class="my-tickets">
+  <header class="tickets-header">
+    <h2>Today's Tickets</h2>
+    <p class="subtitle">{{ todayLabel }}</p>
+  </header>
+
+  <!-- Summary cards -->
+  <div class="summary-cards">
+    <div class="summary-card">
+      <span class="summary-label">Total tickets</span>
+      <span class="summary-value">{{ todayCount() }}</span>
+    </div>
+    <div class="summary-card highlight">
+      <span class="summary-label">Revenue today</span>
+      <span class="summary-value">{{
+        todayRevenue() | currency: 'EUR' : 'symbol' : '1.2-2' : 'es-ES'
+      }}</span>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="p-message p-message-error mb-4" role="alert">
+      <span class="p-message-icon pi pi-times-circle"></span>
+      <span class="p-message-detail">{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- Filters -->
+  <div class="orders-filters" aria-label="Ticket filters">
+    <label class="filter-field code-field" for="my-tickets-code-filter">
+      <span>Code</span>
+      <input
+        id="my-tickets-code-filter"
+        type="text"
+        class="filter-input"
+        [value]="searchCodeFilter()"
+        placeholder="Search by code..."
+        (input)="onSearchCodeFilterChange($any($event.target).value)"
+      />
+    </label>
+
+    <label class="filter-field" for="my-tickets-payment-filter">
+      <span>Payment</span>
+      <select
+        id="my-tickets-payment-filter"
+        class="filter-input"
+        [value]="paymentFilter() ?? ''"
+        (change)="onPaymentFilterChange($any($event.target).value)"
+      >
+        <option value="">All payments</option>
+        <option value="CASH">Cash</option>
+        <option value="CARD">Card</option>
+      </select>
+    </label>
+
+    <button
+      type="button"
+      class="clear-filters-button"
+      [disabled]="!hasActiveFilters()"
+      (click)="clearFilters()"
+    >
+      Clear filters
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0"><i class="pi pi-receipt"></i> Client</p-tab>
+      <p-tab value="1"><i class="pi pi-truck"></i> Supplier</p-tab>
+    </p-tablist>
+
+    <p-tabpanel value="0">
+      <app-table
+        title="Client Tickets"
+        entityLabel="tickets"
+        [loading]="loading()"
+        [rows]="filteredAllTickets()"
+        [columns]="allTicketsColumns"
+        [actions]="actions"
+        [paginator]="true"
+        [rowsPerPage]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tickets"
+        emptyMessage="No client tickets for today."
+      />
+    </p-tabpanel>
+
+    <p-tabpanel value="1">
+      <app-table
+        title="Supplier Tickets"
+        entityLabel="tickets"
+        [loading]="loading()"
+        [rows]="filteredSupplierTickets()"
+        [columns]="supplierColumns"
+        [actions]="actions"
+        [paginator]="true"
+        [rowsPerPage]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tickets"
+        emptyMessage="No supplier tickets for today."
+      />
+    </p-tabpanel>
+  </p-tabs>
+</section>

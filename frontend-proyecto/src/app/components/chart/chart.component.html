@@ -1,0 +1,28 @@
+@if (isBrowser) {
+  <div class="chart-container">
+
+    @if (title) {
+      <h3 class="chart-title">{{ title }}</h3>
+    }
+
+    @if (loading) {
+      <!-- Estado de carga: skeleton con misma altura que la gráfica -->
+      <p-skeleton [height]="height" borderRadius="8px" />
+    } @else if (hasData) {
+      <!-- Estado con datos: gráfica renderizada -->
+      <p-chart
+        [type]="type"
+        [data]="data"
+        [options]="resolvedOptions"
+        [style]="{ height: height, width: '100%' }">
+      </p-chart>
+    } @else {
+      <!-- Estado vacío: sin datos tras respuesta HTTP -->
+      <div class="chart-empty" [ngStyle]="{ height: height }">
+        <i class="pi pi-chart-bar chart-empty__icon"></i>
+        <p class="chart-empty__message">{{ emptyMessage }}</p>
+      </div>
+    }
+
+  </div>
+}

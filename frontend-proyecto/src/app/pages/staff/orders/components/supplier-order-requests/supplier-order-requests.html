@@ -1,0 +1,35 @@
+@if (errorMessage()) {
+  <p class="orders-error">{{ errorMessage() }}</p>
+}
+
+@if (successMessage()) {
+  <p class="supplier-success">{{ successMessage() }}</p>
+}
+
+<app-table
+  entityLabel="Supplier orders"
+  title="Supplier order requests"
+  description="Filter supplier orders by supplier, creator, date, and status."
+  emptyMessage="No supplier orders match the current filters."
+  [loading]="loading() || updatingOrderId() !== null"
+  [rows]="rows()"
+  [columns]="columns()"
+  [actions]="actions()"
+  [paginator]="true"
+  [rowsPerPage]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} supplier orders"
+  [rowClickable]="true"
+  (actionTriggered)="actionTriggered.emit($event)"
+  (rowClicked)="rowClicked.emit($event)"
+>
+  <div headerActions>
+    <p-button
+      label="New Supplier Order"
+      icon="pi pi-plus"
+      severity="primary"
+      routerLink="/staff/supplier-orders/new"
+    ></p-button>
+  </div>
+</app-table>

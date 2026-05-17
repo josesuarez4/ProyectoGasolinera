@@ -1,0 +1,142 @@
+<section class="staff-table-shell">
+  @if (title() || description()) {
+    <header class="staff-table-header">
+      <div class="staff-table-copy">
+        @if (title()) {
+          <p class="staff-table-eyebrow">{{ entityLabel() }}</p>
+          <h2>{{ title() }}</h2>
+        }
+
+        @if (description()) {
+          <p class="staff-table-description">{{ description() }}</p>
+        }
+      </div>
+
+      <div class="staff-table-header-actions">
+        <ng-content select="[headerActions]"></ng-content>
+      </div>
+    </header>
+  }
+
+  <div class="staff-table-surface">
+    <p-table
+      [value]="displayRows()"
+      [paginator]="paginator()"
+      [rows]="rowsPerPage()"
+      [first]="first()"
+      [totalRecords]="resolvedTotalRecords()"
+      [rowsPerPageOptions]="rowsPerPageOptions()"
+      [showCurrentPageReport]="showCurrentPageReport()"
+      [currentPageReportTemplate]="currentPageReportTemplate()"
+      [loading]="loading()"
+      [rowHover]="true"
+      [stripedRows]="true"
+      [customSort]="true"
+      (sortFunction)="handleSort($event)"
+      (onPage)="emitPageChange($event)"
+      class="staff-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          @if (hasActions() && actionColumnPosition() === 'start') {
+            <th scope="col" class="staff-table-actions-head">Actions</th>
+          }
+
+          @for (column of columns(); track column.field) {
+            <th
+              scope="col"
+              [style.width]="column.width ?? null"
+              [style.textAlign]="column.align ?? 'left'"
+              [pSortableColumn]="column.sortable !== false ? column.field : undefined"
+            >
+              {{ column.header }}
+              @if (column.sortable !== false) {
+                <p-sortIcon [field]="column.field" />
+              }
+            </th>
+          }
+
+          @if (hasActions() && actionColumnPosition() === 'end') {
+            <th scope="col" class="staff-table-actions-head">Actions</th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+        <tr
+          [class]="getRowClass(row)"
+          [class.staff-table-row-clickable]="rowClickable()"
+          [attr.tabindex]="rowClickable() ? 0 : null"
+          [attr.role]="rowClickable() ? 'button' : null"
+          (click)="rowClickable() && emitRowClick(row, rowIndex)"
+          (keydown.enter)="rowClickable() && emitRowClick(row, rowIndex)"
+          (keydown.space)="rowClickable() && emitRowClick(row, rowIndex)"
+        >
+          @if (hasActions() && actionColumnPosition() === 'start') {
+            <td class="staff-table-actions-cell">
+              <div class="staff-table-actions" (click)="$event.stopPropagation()">
+                @for (action of actions(); track action.id) {
+                  @if (isActionVisible(action, row)) {
+                    <p-button
+                      [icon]="action.icon"
+                      [severity]="action.severity ?? 'secondary'"
+                      [outlined]="(action.appearance ?? 'outlined') === 'outlined'"
+                      [text]="(action.appearance ?? 'outlined') === 'text'"
+                      [styleClass]="action.styleClass ?? 'p-button-sm staff-table-action-button'"
+                      [disabled]="isActionDisabled(action, row)"
+                      [ariaLabel]="action.label"
+                      (onClick)="emitAction(action, row, rowIndex)"
+                    ></p-button>
+                  }
+                }
+              </div>
+            </td>
+          }
+
+          @for (column of columns(); track column.field) {
+            <td
+              [class]="column.cellClass ?? ''"
+              [style.textAlign]="column.align ?? 'center'"
+              [style.width]="column.width ?? null"
+              [style.maxWidth]="column.width ?? '12rem'"
+              [pTooltip]="getCellValue(column, row)"
+              tooltipPosition="top"
+              [showDelay]="500"
+            >
+              {{ getCellValue(column, row) }}
+            </td>
+          }
+
+          @if (hasActions() && actionColumnPosition() === 'end') {
+            <td class="staff-table-actions-cell">
+              <div class="staff-table-actions" (click)="$event.stopPropagation()">
+                @for (action of actions(); track action.id) {
+                  @if (isActionVisible(action, row)) {
+                    <p-button
+                      [icon]="action.icon"
+                      [severity]="action.severity ?? 'secondary'"
+                      [outlined]="(action.appearance ?? 'outlined') === 'outlined'"
+                      [text]="(action.appearance ?? 'outlined') === 'text'"
+                      [styleClass]="action.styleClass ?? 'p-button-sm staff-table-action-button'"
+                      [disabled]="isActionDisabled(action, row)"
+                      [ariaLabel]="action.label"
+                      (onClick)="emitAction(action, row, rowIndex)"
+                    ></p-button>
+                  }
+                }
+              </div>
+            </td>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="columns().length + (hasActions() ? 1 : 0)" class="staff-table-empty">
+            {{ emptyMessage() }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>

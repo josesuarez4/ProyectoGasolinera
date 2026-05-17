@@ -1,0 +1,205 @@
+:host {
+  display: block;
+}
+
+.staff-table-shell {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.94)), #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+}
+
+.staff-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--surface-border);
+  margin-bottom: 1.5rem;
+}
+
+.staff-table-copy {
+  flex: 1;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.staff-table-header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.staff-table-eyebrow {
+  margin: 0;
+  color: #b45309;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.staff-table-copy h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+  line-height: 1.15;
+}
+
+.staff-table-description {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.96rem;
+  max-width: 72ch;
+}
+
+.staff-table-surface {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: #ffffff;
+}
+
+:host ::ng-deep .staff-table .p-datatable-table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: auto;
+  margin: 0;
+}
+
+.staff-table-actions-head {
+  text-align: center;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.staff-table-actions-cell {
+  text-align: center;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.staff-table-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+}
+
+.staff-table-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: #64748b;
+}
+
+:host ::ng-deep .staff-table .p-datatable-thead>tr>th {
+  border: 0;
+  padding: 0.6rem 0.8rem;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center !important;
+}
+
+:host ::ng-deep .staff-table .p-datatable-tbody>tr>td {
+  border-color: #e2e8f0;
+  padding: 0.5rem 0.8rem;
+  color: #0f172a;
+  white-space: nowrap;
+  text-align: center !important;
+  max-width: 12rem;
+  /* Middle ground to ensure cropping of long lists */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .staff-table .p-datatable-tbody>tr:nth-child(even) {
+  background: #fcfdff;
+}
+
+:host ::ng-deep .staff-table .p-datatable-tbody>tr:hover {
+  background: #f8fafc;
+}
+
+:host ::ng-deep .staff-table .p-datatable-tbody>tr.staff-table-row-clickable {
+  cursor: pointer;
+}
+
+:host ::ng-deep .staff-table .p-datatable-tbody>tr.staff-table-row-clickable:hover {
+  background: #eef2ff;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .staff-table .p-datatable-tbody>tr.staff-table-row-clickable:hover {
+  background: #1e3a8a;
+}
+
+:host ::ng-deep .staff-table-action-button {
+  white-space: nowrap;
+}
+
+:host-context(html.my-app-dark) .staff-table-shell {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.94)), #020617;
+  border-color: rgba(148, 163, 184, 0.12);
+  box-shadow: 0 14px 36px rgba(2, 6, 23, 0.3);
+}
+
+:host-context(html.my-app-dark) .staff-table-copy h2 {
+  color: #e2e8f0;
+}
+
+:host-context(html.my-app-dark) .staff-table-surface {
+  background: #0f172a;
+  border-color: rgba(148, 163, 184, 0.15);
+}
+
+:host-context(html.my-app-dark) .staff-table-description {
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .staff-table .p-datatable-thead>tr>th {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .staff-table .p-datatable-tbody>tr>td {
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+:host-context(html.my-app-dark) ::ng-deep .staff-table .p-datatable-tbody>tr:nth-child(even) {
+  background: #1e293b;
+}
+
+:host-context(html.my-app-dark) ::ng-deep .staff-table .p-datatable-tbody>tr:hover {
+  background: #334155;
+}
+
+@media (max-width: 640px) {
+  .staff-table-shell {
+    padding: 1rem;
+    border-radius: 1.1rem;
+  }
+
+  .staff-table-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .staff-table-actions,
+  .staff-table-actions-head,
+  .staff-table-actions-cell {
+    text-align: left;
+    justify-content: flex-start;
+  }
+}

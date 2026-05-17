@@ -1,0 +1,269 @@
+.floating-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  min-height: 64px;
+
+  /* Aqui va lo de Glassmorphism */
+  background: rgba(248, 250, 252, 0.82);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.32);
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 2.5rem;
+  transition: all 0.3s ease;
+}
+
+.floating-header:hover {
+  background: rgba(248, 250, 252, 0.9);
+}
+
+html.my-app-dark .floating-header {
+  background: rgba(15, 23, 42, 0.72);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.5);
+}
+
+html.my-app-dark .floating-header:hover {
+  background: rgba(15, 23, 42, 0.82);
+}
+
+.logo-section {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: #0f172a;
+  transition: transform 0.2s ease;
+}
+
+.logo-section:hover {
+  transform: scale(1.05);
+}
+
+html.my-app-dark .logo-section {
+  color: #e2e8f0;
+}
+
+.logo-icon-img {
+  width: 2.8rem;
+  height: 2.8rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.logo-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #1e293b, #475569);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.my-app-dark .logo-text {
+  background: linear-gradient(to right, #f8fafc, #cbd5e1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+html.my-app-dark .nav-links {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.staff-identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 180px;
+  padding: 0.35rem 1rem;
+  border-radius: 18px;
+  background: rgba(226, 232, 240, 0.65);
+  color: #0f172a;
+}
+
+html.my-app-dark .staff-identity {
+  background: rgba(30, 41, 59, 0.78);
+  color: #f1f5f9;
+}
+
+.staff-identity-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+}
+
+html.my-app-dark .staff-identity-label {
+  color: #94a3b8;
+}
+
+.staff-identity strong {
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.nav-links li {
+  margin: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.my-app-dark .nav-links a {
+  color: #cbd5e1;
+}
+
+.nav-links a:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+html.my-app-dark .nav-links a:hover {
+  color: #f8fafc;
+  background: rgba(51, 65, 85, 0.88);
+  box-shadow: 0 6px 14px rgba(2, 6, 23, 0.45);
+}
+
+.nav-links a:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+html.my-app-dark .nav-links a:active {
+  background: rgba(71, 85, 105, 0.9);
+}
+
+.nav-links a.active-link {
+  color: #ffffff;
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.actions-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+:host ::ng-deep .theme-toggle-btn.p-button {
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #334155 !important;
+  border: 1px solid rgba(100, 116, 139, 0.5) !important;
+  box-shadow:
+    0 2px 10px rgba(15, 23, 42, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9) !important;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+}
+
+:host ::ng-deep .theme-toggle-btn.p-button:hover {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(71, 85, 105, 0.62) !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .theme-toggle-btn.p-button {
+  background: rgba(71, 85, 105, 0.82) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.45) !important;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+}
+
+:host-context(.my-app-dark) ::ng-deep .theme-toggle-btn.p-button:hover {
+  background: rgba(100, 116, 139, 0.85) !important;
+  color: #f8fafc !important;
+}
+
+@media (max-width: 900px) {
+  .floating-header {
+    border-radius: 24px;
+    align-items: stretch;
+    flex-direction: column;
+    width: min(94%, 640px);
+    padding: 0.9rem;
+  }
+
+  .floating-header .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .staff-identity {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .floating-header .actions-section {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .nav-links {
+    position: static;
+    transform: none;
+  }
+
+}
+
+@media (max-width: 600px) {
+  .floating-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+}

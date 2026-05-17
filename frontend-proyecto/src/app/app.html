@@ -1,0 +1,17 @@
+@if (!isAdminRoute()) {
+  <app-header
+    [isLoggedIn]="auth.isAuthenticated()"
+    (actionClick)="onHeaderAction($event)"
+  ></app-header>
+}
+
+<div class="container" [class.container-admin]="isAdminRoute()">
+  <router-outlet></router-outlet>
+</div>
+@if (!isAdminRoute()) {
+  <app-footer></app-footer>
+}
+
+<!-- Cart drawer — global, sits outside the router outlet -->
+<app-cart></app-cart>
+<p-toast></p-toast>

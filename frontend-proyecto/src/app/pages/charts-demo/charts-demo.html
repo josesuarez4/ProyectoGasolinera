@@ -1,0 +1,177 @@
+<div class="demo-container">
+
+  <header class="demo-header">
+    <h1 class="demo-title">Galería de Gráficas</h1>
+    <p class="demo-subtitle">Ejemplos de todos los tipos disponibles con sus opciones de Chart.js</p>
+  </header>
+
+  <!-- ── LINE ─────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="section-meta">
+      <div class="section-labels">
+        <p-tag value="line" severity="info" />
+        <span class="section-desc">
+          Selector de periodo · tooltip con título y footer · línea discontinua · interaction mode index
+        </span>
+      </div>
+      <div class="period-selector">
+        <p-button
+          label="Día"
+          size="small"
+          [outlined]="selectedPeriod !== 'day'"
+          (onClick)="loadSales('day')">
+        </p-button>
+        <p-button
+          label="Semana"
+          size="small"
+          [outlined]="selectedPeriod !== 'week'"
+          (onClick)="loadSales('week')">
+        </p-button>
+        <p-button
+          label="Mes"
+          size="small"
+          [outlined]="selectedPeriod !== 'month'"
+          (onClick)="loadSales('month')">
+        </p-button>
+      </div>
+    </div>
+    <app-chart
+      type="line"
+      [data]="salesData"
+      [options]="salesOptions"
+      [loading]="salesLoading"
+      title="Evolución de ventas"
+      height="320px">
+    </app-chart>
+  </section>
+
+  <p-divider />
+
+  <!-- ── BAR + DOUGHNUT ────────────────────────────────────────────────────── -->
+  <div class="charts-grid">
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="bar (horizontal)" severity="info" />
+        <span class="section-desc">indexAxis y · tooltip con afterLabel para categoría · borderRadius</span>
+      </div>
+      <app-chart
+        type="bar"
+        [data]="stockData"
+        [options]="stockOptions"
+        [loading]="stockLoading"
+        title="Stock por producto"
+        height="300px">
+      </app-chart>
+    </section>
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="doughnut" severity="info" />
+        <span class="section-desc">cutout 70% · rotation -90° · tooltip con porcentaje</span>
+      </div>
+      <app-chart
+        type="doughnut"
+        [data]="paymentData"
+        [options]="paymentOptions"
+        [loading]="paymentLoading"
+        title="Ingresos por tipo de pago"
+        height="300px">
+      </app-chart>
+    </section>
+
+  </div>
+
+  <p-divider />
+
+  <!-- ── BAR APILADO + PIE ─────────────────────────────────────────────────── -->
+  <div class="charts-grid">
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="bar (stacked)" severity="info" />
+        <span class="section-desc">scales.x/y stacked · tooltip footer con total de turno · easing easeOutBounce</span>
+      </div>
+      <app-chart
+        type="bar"
+        [data]="cashData"
+        [options]="cashOptions"
+        [loading]="cashLoading"
+        title="Ingresos por turno de caja"
+        height="300px">
+      </app-chart>
+    </section>
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="pie" severity="info" />
+        <span class="section-desc">tooltip con porcentaje calculado · hoverOffset · animateRotate</span>
+      </div>
+      <app-chart
+        type="pie"
+        [data]="ordersData"
+        [loading]="ordersLoading"
+        title="Pedidos online por estado"
+        height="300px">
+      </app-chart>
+    </section>
+
+  </div>
+
+  <p-divider />
+
+  <!-- ── RADAR + POLARAREA ─────────────────────────────────────────────────── -->
+  <div class="charts-grid">
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="radar" severity="info" />
+        <span class="section-desc">doble dataset · pointLabels · ticks sin backdrop · grid personalizado</span>
+      </div>
+      <app-chart
+        type="radar"
+        [data]="radarData"
+        [loading]="radarLoading"
+        title="Top productos — unidades vs ingresos"
+        height="320px">
+      </app-chart>
+    </section>
+
+    <section class="demo-section">
+      <div class="section-meta">
+        <p-tag value="polarArea" severity="info" />
+        <span class="section-desc">animateScale · tooltip con formato moneda · leyenda a la derecha</span>
+      </div>
+      <app-chart
+        type="polarArea"
+        [data]="polarData"
+        [options]="polarOptions"
+        [loading]="polarLoading"
+        title="Ingresos por producto"
+        height="320px">
+      </app-chart>
+    </section>
+
+  </div>
+
+  <p-divider />
+
+  <!-- ── MIXED ─────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="section-meta">
+      <p-tag value="mixed (bar + line)" severity="warn" />
+      <span class="section-desc">
+        Doble eje Y · dataset con type propio · interaction index · grid derecho desactivado
+      </span>
+    </div>
+    <app-chart
+      type="bar"
+      [data]="mixedData"
+      [options]="mixedOptions"
+      [loading]="mixedLoading"
+      title="Ventas (€) vs Tickets emitidos — doble eje"
+      height="340px">
+    </app-chart>
+  </section>
+
+</div>

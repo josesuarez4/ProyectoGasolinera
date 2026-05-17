@@ -1,0 +1,284 @@
+:host {
+  display: block;
+}
+
+.staff-users-page {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.users-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(248, 250, 252, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1.25rem;
+}
+
+html.my-app-dark .users-filters {
+  background: rgba(30, 41, 59, 0.4);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-field span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+html.my-app-dark .filter-input {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #f1f5f9;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+}
+
+.clear-filters-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 42px;
+}
+
+.clear-filters-button:not(:disabled):hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.clear-filters-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* Light Mode Specifics */
+html:not(.my-app-dark) ::v-deep(.detail-dialog-custom),
+html:not(.my-app-dark) ::v-deep(.detail-dialog-custom .p-dialog-content) {
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+}
+
+html:not(.my-app-dark) ::v-deep(.detail-dialog-custom .p-card) {
+  background: rgba(248, 250, 252, 0.5) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark Mode Specifics */
+html.my-app-dark ::v-deep(.detail-dialog-custom),
+html.my-app-dark ::v-deep(.detail-dialog-custom .p-dialog-content) {
+  background: #0f172a !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.my-app-dark ::v-deep(.detail-dialog-custom .p-card) {
+  background: rgba(30, 41, 59, 0.3) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::v-deep(.detail-dialog-custom .detail-container) {
+  padding: 2rem !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+::v-deep(.detail-dialog-custom .p-dialog-header),
+::v-deep(.detail-dialog-custom .p-dialog-footer) {
+  display: none !important;
+}
+
+.product-image-container {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.detail-data-item {
+  border: none !important;
+  box-shadow: none !important;
+  background: rgba(248, 250, 252, 0.4) !important;
+}
+
+html.my-app-dark .detail-data-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+::v-deep(.detail-dialog-custom .detail-data-label) {
+  color: #64748b !important;
+}
+
+html.my-app-dark .detail-data-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+::v-deep(.detail-dialog-custom .detail-data-label) {
+  color: #64748b !important;
+}
+
+html.my-app-dark ::v-deep(.detail-dialog-custom .detail-data-label),
+html.my-app-dark .detail-data-label,
+html.my-app-dark .info-item-label {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+html.my-app-dark .gradient-text,
+html.my-app-dark .detail-data-value,
+html.my-app-dark .info-item-value,
+html.my-app-dark .detail-main-title {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.my-app-dark .info-separator {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.info-separator {
+  background: linear-gradient(90deg, rgba(148, 163, 184, 0.1) 0%, transparent 100%) !important;
+}
+
+/* ── Detail Header ── */
+.detail-header-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.detail-icon-circle {
+  width: 48px;
+  height: 48px;
+  background: rgba(30, 64, 175, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html.my-app-dark .detail-icon-circle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.detail-icon-circle i {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+html.my-app-dark .detail-icon-circle i {
+  color: #ffffff;
+}
+
+.detail-main-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 0;
+  color: #0f172a;
+}
+
+html.my-app-dark .detail-main-title {
+  color: #ffffff;
+}
+
+.detail-main-subtitle {
+  color: #64748b;
+}
+
+html.my-app-dark .detail-main-subtitle {
+  color: #94a3b8;
+}
+
+/* ── Loyalty Card ── */
+.loyalty-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0 !important;
+  padding: 1.5rem 2rem;
+}
+
+html.my-app-dark .loyalty-card {
+  background: #0f172a;
+  border-color: #334155 !important;
+}
+
+.loyalty-code {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--color-primary);
+  font-family: monospace;
+  display: block;
+  margin-top: 1rem;
+}
+
+html.my-app-dark .loyalty-code {
+  color: #ffffff;
+}
+
+/* ── Info Items ── */
+.info-item i {
+  background: rgba(30, 64, 175, 0.1);
+  color: var(--color-primary);
+}
+
+html.my-app-dark .info-item i {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.info-item-value {
+  color: #1e293b;
+}
+
+html.my-app-dark .info-item-value {
+  color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  .users-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

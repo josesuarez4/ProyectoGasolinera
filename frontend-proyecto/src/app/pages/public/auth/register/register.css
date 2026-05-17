@@ -1,0 +1,316 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 6.5rem);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 40%, #0d2b6b 100%);
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(26, 79, 189, 0.15) 0%, rgba(26, 79, 189, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-page::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(13, 43, 107, 0.1) 0%, rgba(13, 43, 107, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 3.5rem 3rem;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.08),
+    0 10px 10px -5px rgba(0, 0, 0, 0.03);
+  max-width: 520px;
+  width: 100%;
+  animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 4rem;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eyebrow {
+  color: #1a4fbd;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.description {
+  color: #64748b;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+:host ::ng-deep .field input.p-inputtext,
+:host ::ng-deep .p-password input {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(203, 213, 225, 0.5) !important;
+  border-radius: 12px !important;
+  padding: 0.85rem 1.25rem !important;
+  color: #1e293b !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem !important;
+  backdrop-filter: blur(5px);
+}
+
+:host ::ng-deep .field input.p-inputtext:focus,
+:host ::ng-deep .p-password input:focus {
+  background: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+  outline: none;
+}
+
+:host ::ng-deep .field input.p-inputtext::placeholder,
+:host ::ng-deep .p-password input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:host ::ng-deep .p-password .p-password-input {
+  padding-right: 3rem !important;
+}
+
+:host ::ng-deep .p-button.p-button-primary {
+  background: linear-gradient(135deg, #1a4fbd 0%, #0d2b6b 100%) !important;
+  border: none !important;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 10px 20px -5px rgba(26, 79, 189, 0.4) !important;
+  margin-top: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+:host ::ng-deep .p-button.p-button-primary,
+:host ::ng-deep .p-button.p-button-primary .p-button-label,
+:host ::ng-deep .p-button.p-button-primary .p-button-icon {
+  color: #ffffff !important;
+}
+
+:host ::ng-deep .p-button.p-button-primary:hover {
+  background: linear-gradient(135deg, #0d2b6b 0%, #09214d 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px -5px rgba(26, 79, 189, 0.5) !important;
+}
+
+:host ::ng-deep .p-button.p-button-primary:active {
+  transform: translateY(0);
+}
+
+:host ::ng-deep .p-button.p-button-primary:disabled {
+  background: linear-gradient(135deg, #557ecf 0%, #3b5f9a 100%) !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+:host ::ng-deep .p-button.p-button-primary:disabled .p-button-label,
+:host ::ng-deep .p-button.p-button-primary:disabled .p-button-icon {
+  color: #e2e8f0 !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-button.p-button-primary:disabled {
+  background: linear-gradient(135deg, #3c5f9a 0%, #274677 100%) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-button.p-button-primary,
+:host-context(.my-app-dark) ::ng-deep .p-button.p-button-primary .p-button-label,
+:host-context(.my-app-dark) ::ng-deep .p-button.p-button-primary .p-button-icon {
+  color: #f8fafc !important;
+}
+
+:host ::ng-deep .field input.p-inputtext,
+:host ::ng-deep .p-password,
+:host ::ng-deep .p-password-input {
+  width: 100% !important;
+  display: block !important;
+}
+
+.footer-actions {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.footer-actions p {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.footer-actions a {
+  color: #1a4fbd;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.footer-actions a:hover {
+  color: #0d2b6b;
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: #94a3b8 !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+.back-link:hover {
+  color: #1e293b !important;
+}
+
+.p-error {
+  font-size: 0.8rem;
+  color: #f87171 !important;
+  margin-top: 0.4rem !important;
+  font-weight: 500;
+}
+
+:host-context(.my-app-dark) .auth-page {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 42%, #0d2b6b 100%);
+}
+
+:host-context(.my-app-dark) .auth-page::before {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.26) 0%, rgba(59, 130, 246, 0) 72%);
+}
+
+:host-context(.my-app-dark) .auth-page::after {
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, rgba(30, 64, 175, 0) 72%);
+}
+
+:host-context(.my-app-dark) .auth-card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.42);
+  box-shadow:
+    0 30px 60px -18px rgba(2, 6, 23, 0.72),
+    0 12px 18px -8px rgba(2, 6, 23, 0.4);
+}
+
+:host-context(.my-app-dark) .eyebrow {
+  color: #93c5fd;
+}
+
+:host-context(.my-app-dark) h1 {
+  color: #f8fafc;
+}
+
+:host-context(.my-app-dark) .description {
+  color: #cbd5e1;
+}
+
+:host-context(.my-app-dark) .field label {
+  color: #e2e8f0;
+}
+
+:host-context(.my-app-dark) .footer-actions p {
+  color: #cbd5e1;
+}
+
+:host-context(.my-app-dark) .footer-actions a {
+  color: #93c5fd;
+}
+
+:host-context(.my-app-dark) .footer-actions a:hover {
+  color: #bfdbfe;
+}
+
+:host-context(.my-app-dark) .back-link {
+  color: #94a3b8 !important;
+}
+
+:host-context(.my-app-dark) .back-link:hover {
+  color: #e2e8f0 !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .field input.p-inputtext,
+:host-context(.my-app-dark) ::ng-deep .p-password input {
+  background: rgba(15, 23, 42, 0.68) !important;
+  border: 1px solid rgba(100, 116, 139, 0.5) !important;
+  color: #f8fafc !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .field input.p-inputtext:focus,
+:host-context(.my-app-dark) ::ng-deep .p-password input:focus {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25) !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .field input.p-inputtext::placeholder,
+:host-context(.my-app-dark) ::ng-deep .p-password input::placeholder {
+  color: #94a3b8 !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-password .p-password-toggle-mask-icon {
+  color: #94a3b8 !important;
+}
+
+:host-context(.my-app-dark) ::ng-deep .p-password .p-password-toggle-mask-icon:hover {
+  color: #cbd5e1 !important;
+}

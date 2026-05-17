@@ -1,0 +1,117 @@
+<nav class="floating-header">
+  <a class="logo-section" [routerLink]="brandRoute()" aria-label="Ir al inicio">
+    <img src="/img/logo.png" alt="Gas Station Logo" class="logo-icon-img" />
+    <span class="logo-text">{{ brandText() }}</span>
+  </a>
+
+  @if (isStaffView) {
+  <div class="staff-identity">
+    <span class="staff-identity-label">Logged in as</span>
+    <strong>{{ staffRoleLabel }}</strong>
+  </div>
+  } @else {
+  <ul class="nav-links">
+    @if (isLoggedIn()) {
+    <li>
+      <a [routerLink]="'/dashboard'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-home"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="'/client/catalog'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Catalog</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="'/client/my-orders'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-dollar"></i>
+        <span>My Orders</span>
+      </a>
+    </li>
+    <li>
+      <a 
+        [routerLink]="'/client/points'"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="pi pi-gift"></i>
+        <span>Points</span>
+      </a>
+    </li>
+    <li>
+      <a [routerLink]="'/client/my-invoices'" 
+      routerLinkActive="active-link" 
+      [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="pi pi-credit-card"></i>
+        <span>My Tickets</span>
+      </a>
+    </li>
+    } @else {
+    <li>
+      <a [routerLink]="'/'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="'/catalog'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-user"></i>
+        <span>Catalog</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="'/fuel-price'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="pi pi-dollar"></i>
+        <span>Fuel Price</span>
+      </a>
+    </li>
+    }
+  </ul>
+  }
+
+  <div class="actions-section">
+    <p-button [icon]="isDarkMode() ? 'pi pi-moon' : 'pi pi-sun'" [rounded]="true" styleClass="theme-toggle-btn"
+      [ariaLabel]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      (onClick)="toggleDarkMode()"></p-button>
+
+    @if (isClient()) {
+    <p-button icon="pi pi-shopping-cart" [rounded]="true" [text]="true" severity="secondary" [badge]="cartBadge()"
+      badgeSeverity="danger" aria-label="Open cart" (onClick)="onCartToggle()">
+    </p-button>
+
+    <app-notification-center></app-notification-center>
+    }
+
+    @if (isStaffView) {
+    <p-button icon="pi pi-bell" [badge]="notificationCount().toString()" [rounded]="true" [text]="true"
+      severity="secondary" ariaLabel="Notifications"
+      (onClick)="toggleNotifications(notificationsMenu, $event)"></p-button>
+
+    <p-menu #notificationsMenu [popup]="true" [model]="notificationMenuItems()"></p-menu>
+
+    <p-button label="Users" icon="pi pi-users" severity="secondary" [outlined]="true" routerLinkActive="active-btn"
+      styleClass="p-button-sm"></p-button>
+
+    <p-button label="Logout" icon="pi pi-sign-out" severity="danger" styleClass="p-button-sm"
+      (onClick)="actionClick.emit('logout')"></p-button>
+    } @else if (isLoggedIn()) {
+
+    <p-button label="Logout" icon="pi pi-sign-out" severity="danger" styleClass="p-button-sm"
+      (onClick)="actionClick.emit('logout')"></p-button>
+
+    } @else {
+    <p-button label="Login" icon="pi pi-sign-in" [rounded]="true" [text]="true" styleClass="btn-login"
+      [routerLink]="'/login'" routerLinkActive="active-btn"></p-button>
+
+    <p-button label="Register" icon="pi pi-user-plus" [rounded]="true" styleClass="btn-register"
+      [routerLink]="'/register'" routerLinkActive="active-btn"></p-button>
+    }
+  </div>
+</nav>
